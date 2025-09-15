@@ -38,7 +38,7 @@ The constraints for this project are as follows:
 ---
 
 ## 🖊️UML Class Diagram:
-
+<img width="671" height="588" alt="Image" src="https://github.com/user-attachments/assets/08ecba53-b53f-474b-a183-3916e1c88d3e" />
 ---
 
 ## 📖Project Plan:
@@ -50,4 +50,4 @@ The constraints for this project are as follows:
 ---
 
 ## 📚References:
-Indeed. 2025. Assumption vs. Constraint: Definitions, Types and Differences. [online]. Available at: < >. Accessed 12 September 2025.
+Indeed. 2025. Assumption vs. Constraint: Definitions, Types and Differences. [online]. Available at: https://www.indeed.com/career-advice/career-development/assumption-vs-constraint. Accessed 12 September 2025.
