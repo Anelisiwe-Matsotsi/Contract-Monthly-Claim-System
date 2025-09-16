@@ -7,8 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Claims\" />
-    <Folder Include="Views\Approvals\" />
+    <Content Update="wwwroot\images\wallpaper.jpeg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

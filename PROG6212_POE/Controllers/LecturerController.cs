@@ -2,9 +2,14 @@
 
 namespace PROG6212_POE.Controllers
 {
-    public class ClaimsController : Controller
+    public class LecturerController : Controller
     {
         public IActionResult Index()
+        {
+            return View(); 
+        }
+
+        public IActionResult Create()
         {
             return View();
         }
