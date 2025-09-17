@@ -38,11 +38,11 @@ The constraints for this project are as follows:
 ---
 
 ## 🖊️UML Class Diagram:
-<img width="671" height="588" alt="Image" src="https://github.com/user-attachments/assets/08ecba53-b53f-474b-a183-3916e1c88d3e" />
+<img width="671" height="588" alt="Image" src="https://github.com/user-attachments/assets/30bf35e2-159e-4c23-ab85-1e39c300ad69" />
 ---
 
 ## 📖Project Plan:
-
+<img width="796" height="662" alt="Image" src="https://github.com/user-attachments/assets/f2970761-23f9-4840-8044-7feffe54bf7e" />
 ---
 
 ## ✨GUI:
