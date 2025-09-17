@@ -1,39 +1,93 @@
 ﻿@{
     ViewData["Title"] = " Lecturer Claims";
 }
-<div class="container mt-4">
+<div class="container mt-5">
+    <!--  -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="display-4 fw-bold">Lecturer Dashboard</h1>
+        <h2 class="fw-bold">My Claims</h2>
+        <a  asp-controller="Lecturer" asp-action="Create" class="btn btn-dark rounded-pill px-4">
+            New Claim
+        </a>
+    </div>
 
-<h2>Claims</h2>
+    <!-- Claims Table -->
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+            <table class="table table-borderless align-middle">
+                <thead class="border-bottom">
+                    <tr class="text-muted">
+                        <th>Month</th>
+                        <th>Total Hours</th>
+                        <th>Amount</th>
+                        <th>Claim Date</th>
+                        <th>Status</th>
+                        <th class="text-end">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="border-bottom">
+                        <td><strong>August</strong></td>
+                        <td>60</td>
+                        <td>R 8,000</td>
+                        <td>2024-08-20</td>
+                        <td>
+                            <span class="badge rounded-pill bg-warning text-dark px-3">
+                                Pending
+                            </span>
+                        </td>
+                        <td class="text-end">
+                            <a class="btn btn-outline-primary btn-sm rounded-pill px-3" href="#">
+                                View Details
+                            </a>
+                        </td>
+                    </tr>
 
-<table class="table table-striped table-hover">
-    <thead>
-        <tr>
-            <th>Month</th>
-            <th>Total Hours</th>
-            <th>Amount</th>
-            <th>Claim Date</th>
-            <th>Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>August</td>
-            <td>60</td>
-            <td>R8000</td>
-            <td>2024-08-20</td>
-            <td><span class="badge bg-warning text-dark">Pending</span></td>
+                    <tr>
+                        <td><strong>July</strong></td>
+                        <td>40</td>
+                        <td>R 6,000</td>
+                        <td>2024-07-16</td>
+                        <td>
+                            <span class="badge rounded-pill bg-success px-3">
+                                Approved
+                            </span>
+                        </td>
+                        <td class="text-end">
+                            <a class="btn btn-outline-secondary btn-sm rounded-pill px-3 disabled">
+                                Approved
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-        </tr>
-        <tr>
-            <td>July</td>
-            <td>40</td>
-            <td>R6000</td>
-            <td>2024-07-16</td>
-            <td><span class="badge bg-warning text-dark">Approved</span></td>
+    <!-- Notes / Support -->
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="border rounded p-3 h-100">
+                <h6 class="fw-bold">Support</h6>
+                <p class="text-muted">Have a question? Contact your coordinator.</p>
+                <textarea class="form-control" rows="2" placeholder="Write a message..."></textarea>
+                <button class="btn btn-primary btn-sm mt-2 w-100">Send</button>
+            </div>
+        </div>
 
-        </tr>
-    </tbody>
-</table>
+        <div class="col-md-4">
+            <div class="border rounded p-3 h-100">
+                <h6 class="fw-bold">Notes</h6>
+                <textarea class="form-control" rows="3" placeholder="Add notes about this claim..."></textarea>
+            </div>
+        </div>
 
-<a class="btn btn-primary" href="/Claims/Create">Submit New Claim</a>
+        <div class="col-md-4">
+            <div class="border rounded p-3 h-100 text-center">
+                <h6 class="fw-bold">Files</h6>
+                <p class="text-muted">Drag & drop documents here or</p>
+                <a href="#" class="text-decoration-none">click to upload</a>
+            </div>
+        </div>
+    </div>
 </div>

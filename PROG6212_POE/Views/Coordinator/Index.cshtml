@@ -1,0 +1,97 @@
+﻿@{
+    ViewData["Title"] = "Manage Claims"; 
+}
+
+<h1 class="display-4 fw-bold">Coordinator Dashboard</h1>
+<!--Code from Codepen by Hawes, 2025-->
+<div id="mainContent" class="outerContainer">
+ 
+    <div class="topShadow"></div>
+
+    <div class="innerContainer">
+        <div class="searchRow clearfix">
+            <div class="dbTitle">
+
+                <h1>Manage Claims</h1>
+            </div>
+            <div class="dbSearch">
+                <i class="fa fa-search"></i>
+                <input type="text" placeholder="Search claims...">
+            </div>
+        </div>
+
+        <table class="table table-bordered">
+            <thead>
+                <tr class="clearBg">
+                    <th>Claim ID</th>
+                    <th>Lecturer</th>
+                    <th>Month</th>
+                    <th>Total Hours</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1001</td>
+                    <td>Chris Stone</td>
+                    <td>August</td>
+                    <td>16</td>
+                    <td>R4000</td>
+                    <td><span class="status neutral">Pending</span></td>
+                    <td>
+                        <span class="cellButton manage"><a href="/Claims/Edit/1001">Edit</a></span>
+                        <span class="cellButton spam"><a href="/Claims/Details/1001">Details</a></span>
+                        <span class="cellButton del"><a href="/Claims/Delete/1001">Delete</a></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>1002</td>
+                    <td>Avory Kell</td>
+                    <td>August</td>
+                    <td>22</td>
+                    <td>R6000</td>
+                    <td><span class="status positive">Approved</span></td>
+                    <td>
+                        <span class="cellButton manage"><a href="/Claims/Edit/1001">Edit</a></span>
+                        <span class="cellButton spam"><a href="/Claims/Details/1001">Details</a></span>
+                        <span class="cellButton del"><a href="/Claims/Delete/1001">Delete</a></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>1003</td>
+                    <td>Sandile Sezo</td>
+                    <td>September</td>
+                    <td>18</td>
+                    <td>R8000</td>
+                    <td><span class="status neutral">Pending</span></td>
+                    <td>
+                        <span class="cellButton manage"><a href="/Claims/Edit/1001">Edit</a></span>
+                        <span class="cellButton spam"><a href="/Claims/Details/1001">Details</a></span>
+                        <span class="cellButton del"><a href="/Claims/Delete/1001">Delete</a></span>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>1004</td>
+                    <td>Amandla Amoya</td>
+                    <td>August</td>
+                    <td>16</td>
+                    <td>R6000</td>
+                    <td><span class="status positive">Approved</span></td>
+                    <td>
+                        <span class="cellButton manage"><a href="/Claims/Edit/1001">Edit</a></span>
+                        <span class="cellButton spam"><a href="/Claims/Details/1001">Details</a></span>
+                        <span class="cellButton del"><a href="/Claims/Delete/1001">Delete</a></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+<!--Refernce List:
+Hawes, J.Codepen. 2025. Bootstrap Comments Table Mockup.[online].Available at:<https://codepen.io/jhawes/pen/KwmbEz>.Accessed 15 September 2025.
+-->

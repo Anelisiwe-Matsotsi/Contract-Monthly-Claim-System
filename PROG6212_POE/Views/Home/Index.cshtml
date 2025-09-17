@@ -2,7 +2,50 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+<!--Ruiz, 2025-->
+<div class="container mt-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold">Welcome to the Claim Management System</h1>
+        <p class="text-muted">Submit, manage, and approve lecturer claims seamlessly.</p>
+    </div>
+
+    <div class="d-flex justify-content-center flex-wrap g-4">
+        <!-- Lecturer Card -->
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body text-center">
+                    <p class="text-title fw-bold fs-4">Lecturer</p>
+                    <p class="text-body text-muted">Submit your claims quickly and track their approval status.</p>
+                    <a href="/Claims" class="btn btn-dark rounded-pill px-4 mt-3">View Claims</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Coordinator Card -->
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body text-center">
+                    <p class="text-title fw-bold fs-4">Coordinator</p>
+                    <p class="text-body text-muted">Review lecturer claims and approve or reject them with ease.</p>
+                    <a href="/Coordinator" class="btn btn-dark rounded-pill px-4 mt-3">Manage Claims</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Manager Card -->
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body text-center">
+                    <p class="text-title fw-bold fs-4">Manager</p>
+                    <p class="text-body text-muted">Final approval for claims and access to claim reports.</p>
+                    <a href="/Approvals" class="btn btn-dark rounded-pill px-4 mt-3">Approve Claims</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<!--Reference List:
+Ruiz, A.Codepen.2025.Card.[online].Available at:<https://uiverse.io/alexruix/cowardly-ape-35>.Accessed 15 September 2025.
+-->

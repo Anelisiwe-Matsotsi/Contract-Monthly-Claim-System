@@ -2,7 +2,7 @@
 
 namespace PROG6212_POE.Controllers
 {
-    public class ApprovalsController : Controller
+    public class CoordinatorController : Controller
     {
         public IActionResult Index()
         {
