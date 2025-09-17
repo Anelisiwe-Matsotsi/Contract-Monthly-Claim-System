@@ -13,8 +13,39 @@ With CMCS, lecturers will submit claims electronically, attach relevant document
 Part 1 of this project focuses on planning and building a prototype, including the database UML class diagram, a project plan, and a visual user interface design without backend functionality.
 
 ### Design choices and GUI layout
+#### Colour Scheme
+#### Typography
+#### Buttons
+#### Interactions
+#### Navigation
+#### Consistency
+#### User Experience
+
+#### Lecturer View
+#### Programme Coordinator View
+#### Academic Manager View
 
 ### Database structure
+
+#### 1.	Users Table
+- Attributes: userId, username, password, role (Lecturer, Coordinator, Manager)
+- Purpose: stores login credentials and role
+
+#### 2.	Claims Table
+- Attributes: claimId, lecturerId, month, totalHours, hourlyRate, totalAmount, submissionDate, status
+- Purpose: records all lecturer claim submissions with their details and status
+
+#### 3.	Approvals Table
+- Attributes: approvalId, claimId
+- Purpose: tracks the approval or rejection actions taken by coordinators and managers
+
+#### 4.	Supporting Document Table
+- Attributes: documentId, claimId, filename, date
+- Purpose: stores links to uploaded files (evidence or supporting documents) for each claim
+
+#### 5.	Lecturer Table
+- Attributes: lecturerId, name, email, phone
+- Purpose: stores personal and contact details for all lecturers
 
 ### Assumptions and Constraints
 #### Assumptions
@@ -39,10 +70,14 @@ The constraints for this project are as follows:
 
 ## 🖊️UML Class Diagram:
 <img width="671" height="588" alt="Image" src="https://github.com/user-attachments/assets/30bf35e2-159e-4c23-ab85-1e39c300ad69" />
+explain why uml is the way it is...
+
 ---
 
 ## 📖Project Plan:
 <img width="796" height="662" alt="Image" src="https://github.com/user-attachments/assets/f2970761-23f9-4840-8044-7feffe54bf7e" />
+
+
 ---
 
 ## ✨GUI:
