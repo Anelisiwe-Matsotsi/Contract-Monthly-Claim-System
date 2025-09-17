@@ -69,14 +69,50 @@ The constraints for this project are as follows:
 ---
 
 ## 🖊️UML Class Diagram:
-<img width="671" height="588" alt="Image" src="https://github.com/user-attachments/assets/30bf35e2-159e-4c23-ab85-1e39c300ad69" />
-explain why uml is the way it is...
+Draw.io (2025)
+
+<img width="672" height="614" alt="Image" src="https://github.com/user-attachments/assets/e7185ccb-244d-4840-bf37-ee6a25585c6e" />
+
+### UML Class Diagram explanation
+
+The UML class diagram was designed to capture the core entities, attributes, and relationships required for the Contract Monthly Claim System (CMCS). 
+
+#### 1.	User Class
+- Reasoning: The system needs different types of users (Lecturers, Programme Coordinators, Academic Managers). Instead of hardcoding roles, a role attribute allows flexibility in defining permissions.
+
+#### 2.	Lecturer Class
+- Reasoning: Lecturers are the primary claim submitters. A separate Lecturer class was created because their personal and payment-related information is distinct from generic user login credentials.
+
+#### 3.	Claim Class
+- Reasoning: The claim is the central entity of the system. Every lecturer submits monthly claims that must be stored, calculated, and tracked.
+
+#### 4.	SupportingDocument Class
+- Reasoning: Claims must often be accompanied by evidence (timesheets, contracts, proof of hours worked).
+
+#### 5.	Approval Class
+- Reasoning: Every claim goes through an approval process by Programme Coordinators or Academic Managers. This workflow needs to be explicitly modeled.
+
+#### 	Relationships
+Satzinger, Jackson and Burd (2016) 
+
+- User → SupportingDocument (1..*): A user can upload many documents, but each document belongs to one user.
+- Lecturer → Claim (1..*): A lecturer can submit multiple claims, but each claim belongs to one lecturer.
+- Claim → SupportingDocument (1..*): A claim may require multiple supporting documents.
+- Claim → Approval (1..1): Each claim has exactly one approval outcome (either approved, rejected, or pending).
+  
 
 ---
 
 ## 📖Project Plan:
+(Gido, Clements, Baker, Harinarain and Eresia-Eke. 2022)
+
 <img width="796" height="662" alt="Image" src="https://github.com/user-attachments/assets/f2970761-23f9-4840-8044-7feffe54bf7e" />
 
+### Project Plan explanation
+This project plan outlines three key phases of the development of the Contract Monthly Claim System. It includes tasks, start dates, end dates, work hours, and progress tracking to ensure that all deadlines are met.
+Part 1 focuses on design, where you create wireframes, UML diagrams, and database design so that when Part 2 comes along, implementation will be smooth.
+Part 2 brings the system to life. All main business logic and workflows will be implemented.
+Part 3 ensures the system is ready for deployment with thorough testing, bug fixes, and a final report.
 
 ---
 
@@ -85,4 +121,7 @@ explain why uml is the way it is...
 ---
 
 ## 📚References:
-Indeed. 2025. Assumption vs. Constraint: Definitions, Types and Differences. [online]. Available at: https://www.indeed.com/career-advice/career-development/assumption-vs-constraint. Accessed 12 September 2025.
+Draw.io. 2025. UML Class Diagram. [online]. ,Available at: <https://app.diagrams.net/>. Accessed 12 September 2025.
+Gido, J., Clements, JP., Baker, R., Harinarain, N., and Eresia-Eke, C. 2022. Successful Project Management in 
+South Africa. 2nd edition. Cengage Learning. 
+Indeed. 2025. Assumption vs. Constraint: Definitions, Types and Differences. [online]. Available at:<https://www.indeed.com/career-advice/career-development/assumption-vs-constraint>. Accessed 12 September 2025.
