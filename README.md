@@ -13,18 +13,68 @@ With CMCS, lecturers will submit claims electronically, attach relevant document
 Part 1 of this project focuses on planning and building a prototype, including the database UML class diagram, a project plan, and a visual user interface design without backend functionality.
 
 ### Design choices and GUI layout
-#### Colour Scheme
-#### Typography
-#### Buttons
-#### Interactions
-#### Navigation
-#### Consistency
-#### User Experience
+Satzinger, Jackson and Burd (2016) 
 
+#### Colour Scheme
+The interface uses a clean blue to white gradient that gives the system a professional and calm look without overwhelming the user. Blue is the main colour because it represents trust, calmness, and reliability which are all essential qualities. The neutral greys and whites are applied to tables and cards to keep data easy to read and uncluttered. Status indicators use clear colours green is for approved claims, yellow for pending, and red for rejected claims. This colour coding helps users quickly understand claim statuses at a single glance.
+
+#### Typography
+The system uses a modern sans-serif font for readability.
+- Headings (h1,h2) are bold and larger to create heirarchy so key areas like Lecturer Dashboard or Manage Claims can stand out.
+- Body text is slightly muted, ensuring buttons and headings catch the user's eye first.
+  
+#### Buttons
+Buttons follow a rounded-pill style for a polished, consistent look.
+- Dark buttons are used for primary actions like New Claim to grab attention.
+- Contextual colours guide decision making:
+   - Green is for approve or confirm actions
+   - Red for reject or delete actions
+This colour mapping makes actions clear and intuitive.
+
+#### Interactions
+Buttons and table rows have hover effects to guide the user’s focus.
+- Statuses use badges (e.g., badge bg-warning, badge bg-success) so they are easy to scan.
+- Coordinators and Managers can take actions (Approve/Reject/Edit) directly from the claims table, reducing unnecessary navigation.
+- Users can upload files (drag & drop) and add notes directly from the dashboard, making the process smooth.
+
+#### Navigation
+A top navigation bar gives users quick access to Home, Login, Lecturer, Coordinator, and Manager sections.
+Navigation adapts to the logged-in user, so lecturers see their dashboard, coordinators see “Manage Claims,” and managers see “Approve Claims.”
+
+#### Consistency
+Consistency is applied to:
+- Layout: All dashboards have a main heading, claims table, and secondary panels (notes, files, support).
+- Tables: The order of columns (Month → Hours → Amount → Status → Action) stays the same across roles.
+- Colours: Buttons and status badges use the same colour rules everywhere.
+This makes the system predictable, lowering the learning curve for users.
+
+#### User Experience
+The goal is clarity and efficiency:
+-	Claims are listed immediately in a simple table for quick review.
+-	Statuses are colour-coded for instant recognition.
+-	Extra tools (notes, messages, uploads) are grouped neatly below the table, keeping the main area focused on claims.
+-	Lecturers can clearly track claim history, while coordinators/managers can approve or reject with minimal clicks.
+ 
 #### Lecturer View
+Can create a claim with one click via the New Claim button.
+- See claim history in a table showing Month, Hours, Amount, Status, and Actions.
+-	Upload supporting documents, leave notes, and message coordinators directly.
+-	Status badges (Pending/Approved) show the current claim state.
+ 
 #### Programme Coordinator View
+Dashboard titled “Manage Claims.”
+- Can filter/search claims for quick access.
+-	Claims table shows lecturer name, hours, amount, and status.
+-	Can edit, view details, or delete claims before approval.
+-	Designed for handling multiple claims efficiently with minimal scrolling.
+ 
 #### Academic Manager View
 
+Dashboard titled “Approve Claims.”
+- Displays claims table with Approve/Reject buttons right in each row.
+-	Approved claims display a disabled button (Already Approved) to avoid duplicate approvals.
+-	Interface focuses on fast decision-making with minimal distractions.
+ 
 ### Database structure
 
 #### 1.	Users Table
@@ -93,7 +143,7 @@ The UML class diagram was designed to capture the core entities, attributes, and
 - Reasoning: Every claim goes through an approval process by Programme Coordinators or Academic Managers. This workflow needs to be explicitly modeled.
 
 #### 	Relationships
-Satzinger, Jackson and Burd (2016) 
+Satzinger, et al (2016) 
 
 - User → SupportingDocument (1..*): A user can upload many documents, but each document belongs to one user.
 - Lecturer → Claim (1..*): A lecturer can submit multiple claims, but each claim belongs to one lecturer.
@@ -144,6 +194,11 @@ Part 3 ensures the system is ready for deployment with thorough testing, bug fix
 
 ## 📚References:
 Draw.io. 2025. UML Class Diagram. [online]. ,Available at: <https://app.diagrams.net/>. Accessed 12 September 2025.
+
 Gido, J., Clements, JP., Baker, R., Harinarain, N., and Eresia-Eke, C. 2022. Successful Project Management in 
 South Africa. 2nd edition. Cengage Learning. 
+
 Indeed. 2025. Assumption vs. Constraint: Definitions, Types and Differences. [online]. Available at:<https://www.indeed.com/career-advice/career-development/assumption-vs-constraint>. Accessed 12 September 2025.
+
+Satzinger, J.W. Jackson, J.B. and Burd, S.D.,2016. Systems Analysis and Design in a Changing 
+World. 7th edition. Boston: Cengage. 
