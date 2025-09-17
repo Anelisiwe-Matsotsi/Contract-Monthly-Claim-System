@@ -118,6 +118,28 @@ Part 3 ensures the system is ready for deployment with thorough testing, bug fix
 
 ## ✨GUI:
 
+### Home screen:
+
+<img width="1912" height="877" alt="Image" src="https://github.com/user-attachments/assets/89dc9d52-11cc-4d26-9608-efa9c91c91cd" />
+
+### Login screen:
+
+<img width="1816" height="887" alt="Image" src="https://github.com/user-attachments/assets/882ca836-1b4d-4844-8761-f2985b2c1373" />
+
+### Lecturer screen:
+
+<img width="1907" height="901" alt="Image" src="https://github.com/user-attachments/assets/0af8d420-fa54-4dda-bd34-49e36bf9f4fb" />
+
+<img width="1851" height="855" alt="Image" src="https://github.com/user-attachments/assets/e8d7e420-1b0c-4972-a59b-c4029ccffd9f" />
+
+### Coordinator screen:
+
+<img width="1893" height="908" alt="Image" src="https://github.com/user-attachments/assets/2b929c1f-0a26-4807-9b5c-f366688764ce" />
+
+### Manager screen:
+
+<img width="1908" height="887" alt="Image" src="https://github.com/user-attachments/assets/0bcd03a1-125a-4f99-be0d-bb81db07c64a" />
+
 ---
 
 ## 📚References:
