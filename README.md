@@ -1,7 +1,6 @@
 # PROG6212_POE
 
 ---
----
 
 ## 📃Documentation:
 
@@ -193,12 +192,12 @@ Part 3 ensures the system is ready for deployment with thorough testing, bug fix
 ---
 
 ## 📚References:
-Draw.io. 2025. UML Class Diagram. [online]. ,Available at: <https://app.diagrams.net/>. Accessed 12 September 2025.
+Draw.io. 2025. UML Class Diagram. [online]. ,Available at: <https://app.diagrams.net/>. [Accessed 12 September 2025].
 
 Gido, J., Clements, JP., Baker, R., Harinarain, N., and Eresia-Eke, C. 2022. Successful Project Management in 
 South Africa. 2nd edition. Cengage Learning. 
 
-Indeed. 2025. Assumption vs. Constraint: Definitions, Types and Differences. [online]. Available at:<https://www.indeed.com/career-advice/career-development/assumption-vs-constraint>. Accessed 12 September 2025.
+Indeed. 2025. Assumption vs. Constraint: Definitions, Types and Differences. [online]. Available at:<https://www.indeed.com/career-advice/career-development/assumption-vs-constraint>. [Accessed 12 September 2025].
 
 Satzinger, J.W. Jackson, J.B. and Burd, S.D.,2016. Systems Analysis and Design in a Changing 
 World. 7th edition. Boston: Cengage. 
