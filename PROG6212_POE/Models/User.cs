@@ -1,9 +1,14 @@
-﻿namespace PROG6212_POE.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace PROG6212_POE.Models
 {
     public class User
     {
         public int UserId { get; set; }
         public string Username { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
         public string Role { get; set; } // e.g., "Lecturer", "Coordinator", "Manager"
     }
