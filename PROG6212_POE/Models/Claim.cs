@@ -17,6 +17,8 @@ namespace PROG6212_POE.Models
         public string Month { get; set; }
 
         [Required]
+        public string fileName { get; set; }
+        [Required]
         public decimal HourlyRate { get; set; }
         [Required]
         [Range(1, 1000)]

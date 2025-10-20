@@ -3,6 +3,8 @@ using Microsoft.Extensions.Logging;
 using PROG6212_POE.Models;
 using PROG6212_POE.Services;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace PROG6212_POE.Controllers
 {
@@ -29,24 +31,37 @@ namespace PROG6212_POE.Controllers
         [HttpPost]
         public IActionResult Create(Claim claim, IFormFile uploadFile)
         {
-            if(!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 claim.TotalAmount = claim.HourlyRate * claim.TotalHoursWorked;
                 claim.ClaimStatus = "Pending";
                 claim.SubmissionDate = DateTime.Now;
 
+                //This is to handle file upload
+                if (uploadFile != null && uploadFile.Length > 0)
+                {
+                    string uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, "uploads");
+                    if (!Directory.Exists(uploadPath))
+                        Directory.CreateDirectory(uploadPath);
+
+                    string fileName = Path.GetFileName(uploadFile.FileName);
+                    string fullPath = Path.Combine(uploadPath, fileName);
+
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        uploadFile.CopyTo(stream);
+                    }
+
+                    claim.UploadedFilePath = "/uploads/" + fileName;
+                }
+
                 _context.Claim.Add(claim);
                 _context.SaveChanges();
 
-                //This is to handle file upload
-                if(uploadFile != null && uploadFile.Length > 0)
-                {
-                    string uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, "uploads");
-
-                }
+                return RedirectToAction("Index");
             }
 
-            return View();
+            return View(claim);
         }
 
         public IActionResult Details(int? id)
