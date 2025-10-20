@@ -6,36 +6,17 @@ namespace PROG6212_POE.Controllers
 {
     public class LecturerController : Controller
     {
-        private readonly ClaimService _claimService;
+        private readonly ApplicationDbContext _context; // database context
+        private readonly IWebHostEnvironment _webHostEnvironment; // used to access wwwroot and  file
 
-        public LecturerController()
+        public LecturerController(IWebHostEnvironment webHostEnvironment)
         {
-            _claimService = new ClaimService();
+            _webHostEnvironment = webHostEnvironment;
         }
-
-        //Submit new claim
-        [HttpGet]
-        public IActionResult Submit()
-        {
-            return View();
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Submit(Claim claim)
-        {
-            try
-            {
-                if(!ModelState.IsValid)
-                {
-                    return BadRequest("Invalid claim data. Please fill in all required fields correctly.");
-                }
-
-            }
-        }
-
         public IActionResult Index()
         {
-            return View(); 
+            var claims = _c
+            return View(claims); 
         }
         [HttpPost]
         public IActionResult Create(IFormFile uploadFile)

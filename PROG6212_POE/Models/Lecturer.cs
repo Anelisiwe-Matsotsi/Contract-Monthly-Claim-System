@@ -11,6 +11,9 @@ namespace PROG6212_POE.Models
         public string Name { get; set; }
 
         [Required]
+        public string Department { get; set; }
+
+        [Required]
         [EmailAddress]
         public string Email { get; set; }
 
