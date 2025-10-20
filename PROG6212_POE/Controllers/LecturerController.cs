@@ -38,7 +38,7 @@ namespace PROG6212_POE.Controllers
                 claim.SubmissionDate = DateTime.Now;
 
                 //This is to handle file upload
-                if (uploadFile != null && uploadFile.Length > 0)
+                if (uploadFile != null && uploadFile.Length > 0) /*C# Corner, 2024*/
                 {
                     string uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, "uploads");
                     if (!Directory.Exists(uploadPath))
@@ -104,3 +104,7 @@ namespace PROG6212_POE.Controllers
         }
     }
 }
+/*Reference List:
+C# Corner. 2024. Simplifying File Uploads with .NET Core 7 Minimal APIs. [online]. Available at: <https://www.c-sharpcorner.com/article/simplifying-file-uploads-with-net-core-7-minimal-apis/>. [Accessed 19 October 2025].
+
+ */
