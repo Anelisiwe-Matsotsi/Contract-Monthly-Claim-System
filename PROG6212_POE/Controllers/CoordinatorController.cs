@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PROG6212_POE.Models;
+using System.IO;
 
 namespace PROG6212_POE.Controllers
 {
@@ -11,36 +13,40 @@ namespace PROG6212_POE.Controllers
             
             _context = context;
         }
-        public IActionResult Index()
+        
+        public async Task <IActionResult> Index()
         {
-            var pending = _context.Claim.Where(c => c.ClaimStatus == "Pending").OrderBy(c => c.SubmissionDate).ToList();
-            return View(pending); 
+            var pendingClaims = await _context.Claim
+                .Include(c => c.SupportingDocument)
+                .Where(c => c.ClaimStatus == "Pending")
+                .ToListAsync();
+            return View(pendingClaims);
         }
-
-        public IActionResult Approve(int id)
+        [HttpPost]
+        public async Task<IActionResult> Approve(int claimId, string decision)
         {
-            var claim = _context.Claim.Find(id);
-            if(claim != null)
+            var claim = await _context.Claim.FindAsync(claimId);
+            if(claim == null)
             {
-                claim.ClaimStatus = "Approved by Coordinator";
-                _context.SaveChanges();
+                return NotFound();
             }
+            claim.ClaimStatus = decision == "Approve" ? "Approved by Coordinator" : "Rejected";
+            _context.Claim.Update(claim);
+            await _context.SaveChangesAsync();
+            
             return RedirectToAction("Index");
         }
 
-        public IActionResult Reject(int id)
+        public IActionResult DownloadDocument(int documentId)
         {
-            var claim = _context.Claim.Find(id);
-            if (claim != null)
+            var doc = _context.SupportingDocument.Find(documentId);
+            if (doc == null)
             {
-                claim.ClaimStatus = "Rejected by Coordinator";
-                _context.SaveChanges();
+                return NotFound();
             }
-            return RedirectToAction("Index");
-        }
-        public IActionResult Create()
-        {
-            return View(); //Display the claim submission form
+            var encryptedBytes = System.IO.File.ReadAllBytes(doc.FilePath);
+            var decryptedBytes = EncryptionHelper.DecryptFile(encryptedBytes);
+            return File(decryptedBytes, "application/octet-stream", doc.FileName);
         }
     }
 }

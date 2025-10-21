@@ -13,6 +13,7 @@ namespace PROG6212_POE.Models
         [Required]
         public int UserId { get; set; }
         public string FileName { get; set; }
+        public string FilePath { get; set; }
         public DateTime Date { get; set; } = DateTime.Now;
     }
 }

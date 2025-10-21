@@ -65,7 +65,7 @@ namespace PROG6212_POE.Controllers
                     await _context.SaveChangesAsync();
                 }
 
-                return RedirectToAction(nameof(Index), new { lecturerId = claim.LecturerId });
+                return RedirectToAction("Index");
             }
             return View(claim);
         }
