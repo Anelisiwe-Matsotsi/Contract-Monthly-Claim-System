@@ -23,5 +23,6 @@ namespace PROG6212_POE.Models
         [Required]
         public decimal HourlyRate { get; set; }
 
+
     }
 }

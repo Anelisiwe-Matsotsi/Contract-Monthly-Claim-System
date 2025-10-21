@@ -7,7 +7,7 @@ namespace PROG6212_POE.Models
 {
     public class ApplicationDbContext : DbContext
     {
-        public DbSet<User> User { get; set; } //Table for User
+        public DbSet<AppUser> AppUser { get; set; } //Table for User
         public DbSet<Claim> Claim { get; set; } //Table for Claim
         public DbSet<Lecturer> Lecturer { get; set; } //Table for Lecturer
         public DbSet<SupportingDocument> SupportingDocument { get; set; } //Table for SupportingDocument

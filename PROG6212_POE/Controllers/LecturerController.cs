@@ -5,6 +5,7 @@ using PROG6212_POE.Services;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using Microsoft.EntityFrameworkCore;
 
 namespace PROG6212_POE.Controllers
 {
@@ -18,93 +19,66 @@ namespace PROG6212_POE.Controllers
             _context = context;
             _webHostEnvironment = webHostEnvironment;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int lecturerId)
         {
-            var claims = _context.Claim.ToList();
-            return View(claims); 
+            var claims = await _context.Claim
+                .Include(c => c.SupportingDocument)
+                .Where(c => c.LecturerId == lecturerId)
+                .ToListAsync();
+            return View(claims);
         }
+
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult Create(Claim claim, IFormFile uploadFile)
+        [RequestSizeLimit(500000)] /*C# Corner, 2024*/
+        public async Task<IActionResult> Create(Models.Claim claim, IFormFile uploadFile)
         {
             if (ModelState.IsValid)
             {
                 claim.TotalAmount = claim.HourlyRate * claim.TotalHoursWorked;
-                claim.ClaimStatus = "Pending";
-                claim.SubmissionDate = DateTime.Now;
+                _context.Claim.Add(claim);
+                await _context.SaveChangesAsync();
 
-                //This is to handle file upload
-                if (uploadFile != null && uploadFile.Length > 0) /*C# Corner, 2024*/
+                if (uploadFile != null && uploadFile.Length > 0)
                 {
-                    string uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, "uploads");
-                    if (!Directory.Exists(uploadPath))
-                        Directory.CreateDirectory(uploadPath);
-
                     string fileName = Path.GetFileName(uploadFile.FileName);
-                    string fullPath = Path.Combine(uploadPath, fileName);
+                    string path = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", fileName);
 
-                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    using (var stream = new MemoryStream())
                     {
-                        uploadFile.CopyTo(stream);
+                        await uploadFile.CopyToAsync(stream);
+                        var encryptedBytes = EncryptionHelper.EncryptFile(stream.ToArray());
+                        System.IO.File.WriteAllBytes(path, encryptedBytes);
                     }
 
-                    claim.UploadedFilePath = "/uploads/" + fileName;
+                    var doc = new SupportingDocument
+                    {
+                        ClaimId = claim.ClaimId,
+                        FileName = fileName,
+                        FilePath = path
+                    };
+                    _context.SupportingDocument.Add(doc);
+                    await _context.SaveChangesAsync();
                 }
 
-                _context.Claim.Add(claim);
-                _context.SaveChanges();
-
-                return RedirectToAction("Index");
-            }
-
-            return View(claim);
-        }
-
-        public IActionResult Details(int? id)
-        {
-            if(id == null)
-            {
-                return BadRequest("Invalid claim ID.");
-            }
-            var claim = _context.Claim.FirstOrDefault(c => c.ClaimId == id);
-            if(claim == null)
-            {
-                return NotFound("Claim not found.");
+                return RedirectToAction(nameof(Index), new { lecturerId = claim.LecturerId });
             }
             return View(claim);
         }
 
-        public IActionResult Delete(int? id)
+        public IActionResult Download(string fileName)
         {
-            if(id == null)
-            {
-                return BadRequest("Invalid claim ID.");
-            }
-            var claim = _context.Claim.FirstOrDefault(c => c.ClaimId == id);
-            if (claim == null)
-            {
-                return NotFound("Claim not found.");
-            }
-            return View(claim);
-        }
-        public IActionResult ConfirmDelete(int id)
-        {
-            var claim = _context.Claim.FirstOrDefault(c => c.ClaimId == id);
-            if (claim== null)
-            {
-                return NotFound();
-            }
-            _context.Claim.Remove(claim);
-            _context.SaveChanges();
-            return RedirectToAction("Index");
+            string path = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", fileName);
+            var encryptedBytes = System.IO.File.ReadAllBytes(path);
+            var decryptedBytes = EncryptionHelper.DecryptFile(encryptedBytes);
+            return File(decryptedBytes, "application/octet-stream", fileName);
         }
     }
 }
 /*Reference List:
 C# Corner. 2024. Simplifying File Uploads with .NET Core 7 Minimal APIs. [online]. Available at: <https://www.c-sharpcorner.com/article/simplifying-file-uploads-with-net-core-7-minimal-apis/>. [Accessed 19 October 2025].
-
  */

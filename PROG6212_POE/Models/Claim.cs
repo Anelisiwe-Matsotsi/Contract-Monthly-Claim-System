@@ -19,14 +19,21 @@ namespace PROG6212_POE.Models
         [Required]
         public string fileName { get; set; }
         [Required]
+        public string filePath { get; set; }
+        [Required]
         public decimal HourlyRate { get; set; }
         [Required]
         [Range(1, 1000)]
         public int TotalHoursWorked { get; set; }
         public decimal TotalAmount { get; set; }
 
-        public string Notes { get; set; }
+        [Required]
+        public string SupportingDocument { get; set; }
+
+        [Required]
+        public string Description { get; set; }
         public string ClaimStatus { get; set; } = "Pending";
+
         public DateTime SubmissionDate { get; set; } = DateTime.Now;
     }
 }

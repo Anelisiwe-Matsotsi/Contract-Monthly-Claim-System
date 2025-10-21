@@ -2,7 +2,7 @@
 
 namespace PROG6212_POE.Models
 {
-    public class User
+    public class AppUser
     {
         [Required]
         public int UserId { get; set; }
