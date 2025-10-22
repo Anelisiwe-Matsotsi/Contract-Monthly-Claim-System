@@ -5,62 +5,51 @@
     <!--  -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="display-4 fw-bold">Lecturer Dashboard</h1>
-        <h2 class="fw-bold">My Claims</h2>
-        <a  asp-controller="Lecturer" asp-action="Create" class="btn btn-dark rounded-pill px-4">
-            New Claim
-        </a>
-    </div>
+        <h2>My Claims</h2>
 
-    <!-- Claims Table -->
-    <div class="card shadow-sm border-0">
-        <div class="card-body p-4">
-            <table class="table table-borderless align-middle">
-                <thead class="border-bottom">
-                    <tr class="text-muted">
-                        <th>Month</th>
-                        <th>Total Hours</th>
-                        <th>Amount</th>
-                        <th>Claim Date</th>
-                        <th>Status</th>
-                        <th class="text-end">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="border-bottom">
-                        <td><strong>August</strong></td>
-                        <td>60</td>
-                        <td>R 8,000</td>
-                        <td>2024-08-20</td>
-                        <td>
-                            <span class="badge rounded-pill bg-warning text-dark px-3">
-                                Pending
-                            </span>
-                        </td>
-                        <td class="text-end">
-                            <a class="btn btn-outline-primary btn-sm rounded-pill px-3" href="#">
-                                View Details
-                            </a>
-                        </td>
-                    </tr>
+        <p>
+            <a class="btn btn-primary" asp-action="Create">Submit New Claim</a>
+        </p>
 
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Month</th>
+                    <th>Hourly Rate</th>
+                    <th>Total Hours</th>
+                    <th>Total Amount</th>
+                    <th>Status</th>
+                    <th>Submission Date</th>
+                    <th>Notes</th>
+                    <th>Documents</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var claim in Model)
+                {
                     <tr>
-                        <td><strong>July</strong></td>
-                        <td>40</td>
-                        <td>R 6,000</td>
-                        <td>2024-07-16</td>
+                        <td>@claim.Month</td>
+                        <td>@claim.HourlyRate.ToString("C")</td>
+                        <td>@claim.TotalHoursWorked</td>
+                        <td>@claim.TotalAmount.ToString("C")</td>
+                        <td>@claim.ClaimStatus</td>
+                        <td>@claim.SubmissionDate.ToShortDateString()</td>
+                        <td>@claim.Notes</td>
                         <td>
-                            <span class="badge rounded-pill bg-success px-3">
-                                Approved
-                            </span>
-                        </td>
-                        <td class="text-end">
-                            <a class="btn btn-outline-secondary btn-sm rounded-pill px-3 disabled">
-                                Approved
-                            </a>
+                            @if (claim.Documents != null)
+                            {
+                                foreach (var doc in claim.Documents)
+                                {
+                                    <a asp-action="Download" asp-route-fileName="@doc.FileName">@doc.FileName</a>
+
+                                    <br />
+                                }
+                            }
                         </td>
                     </tr>
-                </tbody>
-            </table>
+                }
+            </tbody>
+        </table>
         </div>
     </div>
 

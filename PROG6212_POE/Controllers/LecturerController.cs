@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PROG6212_POE.Models;
-using PROG6212_POE.Services;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using System.IO;
@@ -19,15 +18,18 @@ namespace PROG6212_POE.Controllers
             _context = context;
             _webHostEnvironment = webHostEnvironment;
         }
+
+        //Lecturer views their own claims
         public async Task<IActionResult> Index(int lecturerId)
         {
             var claims = await _context.Claim
-                .Include(c => c.SupportingDocument)
+                //.Include(c => c.SupportingDocuments)
                 .Where(c => c.LecturerId == lecturerId)
                 .ToListAsync();
             return View(claims);
         }
 
+        // Create a new claim
         public IActionResult Create()
         {
             return View();
@@ -39,10 +41,11 @@ namespace PROG6212_POE.Controllers
         {
             if (ModelState.IsValid)
             {
-                claim.TotalAmount = claim.HourlyRate * claim.TotalHoursWorked;
+ 
                 _context.Claim.Add(claim);
                 await _context.SaveChangesAsync();
 
+                //Handle file upload
                 if (uploadFile != null && uploadFile.Length > 0)
                 {
                     string fileName = Path.GetFileName(uploadFile.FileName);

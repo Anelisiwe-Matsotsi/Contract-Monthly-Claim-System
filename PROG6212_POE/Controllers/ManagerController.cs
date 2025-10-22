@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PROG6212_POE.Models;
 
 namespace PROG6212_POE.Controllers
@@ -11,33 +12,70 @@ namespace PROG6212_POE.Controllers
 
             _context = context;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var finalApprove = _context.Claim.Where(c => c.ClaimStatus == "Approved by Coordinator").OrderBy(c => c.SubmissionDate).ToList();   
-            return View(finalApprove);
+            var claims =await _context.Claim
+                .Where(c => c.ClaimStatus == "Approved by Coordinator")
+                .ToListAsync();
+            return View(claims);
         }
 
-        public IActionResult Approve(int id)
+        [HttpPost]
+        public async Task<IActionResult> Approve(int id)
         {
-            var claim = _context.Claim.Find(id);
-            if (claim != null)
+            var claim = await _context.Claim.FindAsync(id);
+            if (claim == null)
             {
-                claim.ClaimStatus = "Approved by Manager";
-                _context.SaveChanges();
+                return NotFound();
             }
+            claim.ClaimStatus = "Approved by Manager";
+            _context.Claim.Update(claim);
+            await _context.SaveChangesAsync();
+
+            _context.Approval.Add(new Approval
+            {
+                ClaimId = id,
+                Decision = "Approved",
+                Role = "Manager",
+                ApprovalDate = DateTime.Now
+            });
+            await _context.SaveChangesAsync();
+
             return RedirectToAction("Index");
         }
-
-        public IActionResult Reject(int id)
+        [HttpPost]
+        public async Task<IActionResult> Reject(int id)
         {
-            var claim = _context.Claim.Find(id);
-            if (claim != null)
+            var claim = await _context.Claim.FindAsync(id);
+            if (claim == null)
             {
-                claim.ClaimStatus = "Rejected by Manager";
-                _context.SaveChanges();
+                return NotFound();
             }
+            claim.ClaimStatus = "Rejected by Manager";
+            _context.Claim.Update(claim);
+            await _context.SaveChangesAsync();
+
+            _context.Approval.Add(new Approval
+            {
+                ClaimId = id,
+                Decision = "Rejected",
+                Role = "Manager",
+                ApprovalDate = DateTime.Now
+            });
+            await _context.SaveChangesAsync();
+
             return RedirectToAction("Index");
         }
-
+        public IActionResult DownloadDocument(int documentId)
+        {
+            var doc = _context.SupportingDocument.Find(documentId);
+            if (doc == null)
+            {
+                return NotFound();
+            }
+            var encryptedBytes = System.IO.File.ReadAllBytes(doc.FilePath);
+            var decryptedBytes = EncryptionHelper.DecryptFile(encryptedBytes);
+            return File(decryptedBytes, "application/octet-stream", doc.FileName);
+        }
     }
 }

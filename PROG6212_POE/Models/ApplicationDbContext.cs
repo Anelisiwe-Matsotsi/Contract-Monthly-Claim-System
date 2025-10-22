@@ -4,17 +4,18 @@ using System;
 using Microsoft.EntityFrameworkCore;
 
 namespace PROG6212_POE.Models
-{
+{ /*IIEVC, 2025*/
     public class ApplicationDbContext : DbContext
     {
-        public DbSet<AppUser> AppUser { get; set; } //Table for User
-        public DbSet<Claim> Claim { get; set; } //Table for Claim
-        public DbSet<Lecturer> Lecturer { get; set; } //Table for Lecturer
-        public DbSet<SupportingDocument> SupportingDocument { get; set; } //Table for SupportingDocument
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-        : base(options)
+            : base(options)
         { }
 
+        public DbSet<Lecturer> Lecturer { get; set; }
+        public DbSet<Claim> Claim { get; set; }
+        public DbSet<SupportingDocument> SupportingDocument { get; set; }
+        public DbSet<Approval> Approval { get; set; }
+        public DbSet<AppUser> AppUser { get; set; }
     }
 }
 /* Reference List:

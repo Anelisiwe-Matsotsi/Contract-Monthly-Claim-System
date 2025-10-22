@@ -4,36 +4,29 @@ namespace PROG6212_POE.Models
 {
     public class Claim
     {
-        [Required]
-        public int ClaimId { get; set; }
+            [Key]
+            public int ClaimId { get; set; }
 
-        [Required]
-        public int LecturerId { get; set; }
+            [Required(ErrorMessage = "Lecturer ID is required.")]
+            public int LecturerId { get; set; }
 
-        [Required]
-        public string LecturerName { get; set; }
+            [Required(ErrorMessage = "Claim Date is required.")]
+            [DataType(DataType.Date)]
+            public DateTime SubmissionDate { get; set; }
 
-        [Required]
-        public string Month { get; set; }
+            [Required(ErrorMessage = "Hours worked are required.")]
+            [Range(1, 200, ErrorMessage = "Hours must be between 1 and 200.")]
+            public int TotalHoursWorked { get; set; }
 
-        [Required]
-        public string fileName { get; set; }
-        [Required]
-        public string filePath { get; set; }
-        [Required]
-        public decimal HourlyRate { get; set; }
-        [Required]
-        [Range(1, 1000)]
-        public int TotalHoursWorked { get; set; }
-        public decimal TotalAmount { get; set; }
+            [Required(ErrorMessage = "Hourly rate is required.")]
+            [Range(100, 1000, ErrorMessage = "Hourly rate must be between R100 and R1000.")]
+            public decimal HourlyRate { get; set; }
 
-        [Required]
-        public string SupportingDocument { get; set; }
 
-        [Required]
-        public string Description { get; set; }
-        public string ClaimStatus { get; set; } = "Pending";
+            public decimal TotalAmount => TotalHoursWorked * HourlyRate;
 
-        public DateTime SubmissionDate { get; set; } = DateTime.Now;
+            [Required(ErrorMessage = "Claim status is required.")]
+            [MaxLength(50)]
+            public string ClaimStatus { get; set; } = "Pending";
+        }
     }
-}

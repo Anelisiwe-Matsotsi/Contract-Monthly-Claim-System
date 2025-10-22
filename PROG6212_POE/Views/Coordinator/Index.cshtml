@@ -5,7 +5,7 @@
 <h1 class="display-4 fw-bold">Coordinator Dashboard</h1>
 <!--Code from Codepen by Hawes, 2025-->
 <div id="mainContent" class="outerContainer">
- 
+
     <div class="topShadow"></div>
 
     <div class="innerContainer">
@@ -23,69 +23,36 @@
         <table class="table table-bordered">
             <thead>
                 <tr class="clearBg">
-                    <th>Claim ID</th>
                     <th>Lecturer</th>
                     <th>Month</th>
                     <th>Total Hours</th>
-                    <th>Amount</th>
+                    <th>Total Amount</th>
                     <th>Status</th>
+                    <th>Submission Date</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1001</td>
-                    <td>Chris Stone</td>
-                    <td>August</td>
-                    <td>16</td>
-                    <td>R4000</td>
-                    <td><span class="status neutral">Pending</span></td>
-                    <td>
-                        <span class="cellButton manage"><a href="/Claims/Edit/1001">Edit</a></span>
-                        <span class="cellButton spam"><a href="/Claims/Details/1001">Details</a></span>
-                        <span class="cellButton del"><a href="/Claims/Delete/1001">Delete</a></span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>1002</td>
-                    <td>Avory Kell</td>
-                    <td>August</td>
-                    <td>22</td>
-                    <td>R6000</td>
-                    <td><span class="status positive">Approved</span></td>
-                    <td>
-                        <span class="cellButton manage"><a href="/Claims/Edit/1001">Edit</a></span>
-                        <span class="cellButton spam"><a href="/Claims/Details/1001">Details</a></span>
-                        <span class="cellButton del"><a href="/Claims/Delete/1001">Delete</a></span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>1003</td>
-                    <td>Sandile Sezo</td>
-                    <td>September</td>
-                    <td>18</td>
-                    <td>R8000</td>
-                    <td><span class="status neutral">Pending</span></td>
-                    <td>
-                        <span class="cellButton manage"><a href="/Claims/Edit/1001">Edit</a></span>
-                        <span class="cellButton spam"><a href="/Claims/Details/1001">Details</a></span>
-                        <span class="cellButton del"><a href="/Claims/Delete/1001">Delete</a></span>
-                    </td>
+                @foreach (var claim in Model)
+                {
+                    <tr>
+                        <td>@claim.Lecturer.FullName</td>
+                        <td>@claim.Month</td>
+                        <td>@claim.TotalHoursWorked</td>
+                        <td>R @claim.TotalAmount</td>
+                        <td>@claim.ClaimStatus</td>
+                        <td>@claim.SubmissionDate.ToShortDateString()</td>
+                        <td>
+                            <form asp-action="Approve" asp-route-id="@claim.ClaimId" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-success btn-sm">Approve</button>
+                            </form>
+                            <form asp-action="Reject" asp-route-id="@claim.ClaimId" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
 
-                </tr>
-                <tr>
-                    <td>1004</td>
-                    <td>Amandla Amoya</td>
-                    <td>August</td>
-                    <td>16</td>
-                    <td>R6000</td>
-                    <td><span class="status positive">Approved</span></td>
-                    <td>
-                        <span class="cellButton manage"><a href="/Claims/Edit/1001">Edit</a></span>
-                        <span class="cellButton spam"><a href="/Claims/Details/1001">Details</a></span>
-                        <span class="cellButton del"><a href="/Claims/Delete/1001">Delete</a></span>
-                    </td>
-                </tr>
             </tbody>
         </table>
 
