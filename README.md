@@ -194,80 +194,25 @@ Part 3 ensures the system is ready for deployment with thorough testing, bug fix
 
 ### Feedback:
 <img width="1920" height="1020" alt="Image" src="https://github.com/user-attachments/assets/b6d86494-6b2a-4483-8899-8210bb9f8d53" />
+Removed the unnecessary things on the page to make it more clear to read.
 
 ### SQL Script:
 
 Azure Portal (2025)
--- Lecturer table
-CREATE TABLE Lecturer (
-    LecturerId INT IDENTITY(1,1) PRIMARY KEY,
-    Name NVARCHAR(100) NOT NULL,
-    Department NVARCHAR(100),
-    Email NVARCHAR(100),
-    Password NVARCHAR(50),
-    HourlyRate DECIMAL(10,2),
-    TotalHoursWorked DECIMAL(10,2),
-    TotalAmount DECIMAL(10,2) 
-);
+<img width="1057" height="945" alt="Image" src="https://github.com/user-attachments/assets/e4ab56e7-07d3-43be-86ed-60319ddb5a99" />
 
--- Claim table
-CREATE TABLE Claim (
-    ClaimId INT IDENTITY(1,1) PRIMARY KEY,
-    LecturerId INT NOT NULL FOREIGN KEY REFERENCES Lecturer(LecturerId),
-    Month NVARCHAR(50) NOT NULL,
-    SubmissionDate DATE NOT NULL,
-    TotalHoursWorked INT NOT NULL,
-    HourlyRate DECIMAL(10,2) NOT NULL,
-    TotalAmount DECIMAL(10,2) NOT NULL,
-    ClaimStatus NVARCHAR(50) NOT NULL,
-    Notes NVARCHAR(MAX),
-    DocumentFileName NVARCHAR(255)
-);
+<img width="1073" height="900" alt="Image" src="https://github.com/user-attachments/assets/f5e642ea-f4e4-4d02-bb30-718e9b43d31a" />
 
--- AppUser table
-CREATE TABLE AppUser (
-    UserId INT IDENTITY(1,1) PRIMARY KEY,
-    Username NVARCHAR(100) NOT NULL,
-    Password NVARCHAR(50) NOT NULL,
-    Role NVARCHAR(50) NOT NULL
-);
+<img width="1119" height="397" alt="Image" src="https://github.com/user-attachments/assets/90890480-107d-4259-9417-5eb50cd405ca" />
 
--- Approval table
-CREATE TABLE Approval (
-    ApprovalId INT IDENTITY(1,1) PRIMARY KEY,
-    ClaimId INT NOT NULL FOREIGN KEY REFERENCES Claim(ClaimId),
-    Decision NVARCHAR(50) NOT NULL,
-    Role NVARCHAR(50) NOT NULL,
-    ApprovalDate DATE
-);
-
--- SupportingDocument table
-CREATE TABLE SupportingDocument (
-    DocumentId INT IDENTITY(1,1) PRIMARY KEY,
-    ClaimId INT NOT NULL FOREIGN KEY REFERENCES Claim(ClaimId),
-    UserId INT NOT NULL FOREIGN KEY REFERENCES AppUser(UserId),
-    FileName NVARCHAR(255) NOT NULL,
-    FilePath NVARCHAR(500) NOT NULL,
-    Date DATE NOT NULL
-);
-
--- Insert sample lecturers
-INSERT INTO Lecturer (Name, Department, Email, Password, HourlyRate)
-VALUES 
-('John Smith', 'Computer Science', 'john.smith@example.com', 'Password123', 200),
-('Jane Doe', 'Information Systems', 'jane.doe@example.com', 'Password456', 180);
-
--- Insert sample app users
-INSERT INTO AppUser (Username, Password, Role)
-VALUES
-('John Smith', 'Password123', 'Lecturer'),
-('Jane Doe', 'Password456', 'Lecturer');
 
 ### Youtube video:
 
+Link: https://youtu.be/UIdylaoA31Q
+
 ---
 ## 📚References:
-Azure Portal.2025. SQL Database script.[online]. Available at:<  > [Accessed 19 October 2025].
+Azure Portal.2025. SQL Database script.[online]. Available at:< https://portal.azure.com/#@advtechonline.onmicrosoft.com/resource/subscriptions/41c840f0-fc0c-4944-97bf-4ae4e6bb7151/resourceGroups/prog/providers/Microsoft.Sql/servers/progst10328767/databases/st10328767/queryEditor > [Accessed 19 October 2025].
 Draw.io. 2025. UML Class Diagram. [online]. Available at: <https://app.diagrams.net/>. [Accessed 12 September 2025].
 
 Gido, J., Clements, JP., Baker, R., Harinarain, N., and Eresia-Eke, C. 2022. Successful Project Management in 
