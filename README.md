@@ -197,17 +197,78 @@ Part 3 ensures the system is ready for deployment with thorough testing, bug fix
 
 ### SQL Script:
 
-<img width="996" height="761" alt="Image" src="https://github.com/user-attachments/assets/f89ff800-3983-4665-8352-8fc329019a28" />
+Azure Portal (2025)
+-- Lecturer table
+CREATE TABLE Lecturer (
+    LecturerId INT IDENTITY(1,1) PRIMARY KEY,
+    Name NVARCHAR(100) NOT NULL,
+    Department NVARCHAR(100),
+    Email NVARCHAR(100),
+    Password NVARCHAR(50),
+    HourlyRate DECIMAL(10,2),
+    TotalHoursWorked DECIMAL(10,2),
+    TotalAmount DECIMAL(10,2) 
+);
 
-<img width="992" height="767" alt="Image" src="https://github.com/user-attachments/assets/a78f4d0b-4edd-4769-88a6-e79c4ae0dce4" />
+-- Claim table
+CREATE TABLE Claim (
+    ClaimId INT IDENTITY(1,1) PRIMARY KEY,
+    LecturerId INT NOT NULL FOREIGN KEY REFERENCES Lecturer(LecturerId),
+    Month NVARCHAR(50) NOT NULL,
+    SubmissionDate DATE NOT NULL,
+    TotalHoursWorked INT NOT NULL,
+    HourlyRate DECIMAL(10,2) NOT NULL,
+    TotalAmount DECIMAL(10,2) NOT NULL,
+    ClaimStatus NVARCHAR(50) NOT NULL,
+    Notes NVARCHAR(MAX),
+    DocumentFileName NVARCHAR(255)
+);
 
-<img width="963" height="623" alt="Image" src="https://github.com/user-attachments/assets/93b55c4a-48b3-457d-8ca7-a9213f1f9e8c" />
+-- AppUser table
+CREATE TABLE AppUser (
+    UserId INT IDENTITY(1,1) PRIMARY KEY,
+    Username NVARCHAR(100) NOT NULL,
+    Password NVARCHAR(50) NOT NULL,
+    Role NVARCHAR(50) NOT NULL
+);
+
+-- Approval table
+CREATE TABLE Approval (
+    ApprovalId INT IDENTITY(1,1) PRIMARY KEY,
+    ClaimId INT NOT NULL FOREIGN KEY REFERENCES Claim(ClaimId),
+    Decision NVARCHAR(50) NOT NULL,
+    Role NVARCHAR(50) NOT NULL,
+    ApprovalDate DATE
+);
+
+-- SupportingDocument table
+CREATE TABLE SupportingDocument (
+    DocumentId INT IDENTITY(1,1) PRIMARY KEY,
+    ClaimId INT NOT NULL FOREIGN KEY REFERENCES Claim(ClaimId),
+    UserId INT NOT NULL FOREIGN KEY REFERENCES AppUser(UserId),
+    FileName NVARCHAR(255) NOT NULL,
+    FilePath NVARCHAR(500) NOT NULL,
+    Date DATE NOT NULL
+);
+
+-- Insert sample lecturers
+INSERT INTO Lecturer (Name, Department, Email, Password, HourlyRate)
+VALUES 
+('John Smith', 'Computer Science', 'john.smith@example.com', 'Password123', 200),
+('Jane Doe', 'Information Systems', 'jane.doe@example.com', 'Password456', 180);
+
+-- Insert sample app users
+INSERT INTO AppUser (Username, Password, Role)
+VALUES
+('John Smith', 'Password123', 'Lecturer'),
+('Jane Doe', 'Password456', 'Lecturer');
 
 ### Youtube video:
 
 ---
 ## 📚References:
-Draw.io. 2025. UML Class Diagram. [online]. ,Available at: <https://app.diagrams.net/>. [Accessed 12 September 2025].
+Azure Portal.2025. SQL Database script.[online]. Available at:<  > [Accessed 19 October 2025].
+Draw.io. 2025. UML Class Diagram. [online]. Available at: <https://app.diagrams.net/>. [Accessed 12 September 2025].
 
 Gido, J., Clements, JP., Baker, R., Harinarain, N., and Eresia-Eke, C. 2022. Successful Project Management in 
 South Africa. 2nd edition. Cengage Learning. 
