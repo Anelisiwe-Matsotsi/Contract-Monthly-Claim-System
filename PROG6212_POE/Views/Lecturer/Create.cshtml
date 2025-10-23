@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "Submit Claim";
 }
+@* /*Troelson and Japiske, 2021*/ *@
 
 <main class="create-page">
     <div class="container mt-5 form-container">
@@ -70,7 +71,7 @@
                     <!-- File Upload -->
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Attach Supporting Documents</label>
-                        <input type="file" name="uploadFile" class="form-control" required accept=".doc,.docx,.xls,.xlsx,.pdf" />
+                        <input type="file" name="uploadFile" class="form-control" required accept=".doc,.docx,.xls,.xlsx,.pdf" /> @* /* Stackoverflow, 2019*/ *@
                     </div>
 
                     <!-- Submit -->
@@ -86,3 +87,8 @@
 @section Scripts {
         <partial name="_ValidationScriptsPartial" />
 }
+
+@* /*Reference List:
+Stackoverflow.2019.
+ Troelsen,A. and Japikse, P. 2021.Pro C# 9 with .NET 5:Foundational Principles and Practices in Programming. 10th ed.Apress.
+ */ *@

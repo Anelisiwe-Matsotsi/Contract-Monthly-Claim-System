@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PROG6212_POE", "PROG6212_PO
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject", "TestProject\TestProject.csproj", "{2D22464C-FF57-4AC2-AEC1-BCB6F893D48E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleTest", "ConsoleTest\ConsoleTest.csproj", "{883DB8F7-304D-4C35-BF31-7E5C05C8AD7B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{2D22464C-FF57-4AC2-AEC1-BCB6F893D48E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D22464C-FF57-4AC2-AEC1-BCB6F893D48E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D22464C-FF57-4AC2-AEC1-BCB6F893D48E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{883DB8F7-304D-4C35-BF31-7E5C05C8AD7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{883DB8F7-304D-4C35-BF31-7E5C05C8AD7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{883DB8F7-304D-4C35-BF31-7E5C05C8AD7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{883DB8F7-304D-4C35-BF31-7E5C05C8AD7B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
