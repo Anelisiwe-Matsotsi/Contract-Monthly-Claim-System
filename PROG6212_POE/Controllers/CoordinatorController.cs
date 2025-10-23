@@ -17,6 +17,7 @@ namespace PROG6212_POE.Controllers
         public async Task <IActionResult> Index()
         {
             var pendingClaims = await _context.Claim
+                .Include(c => c.Lecturer)
                 .Where(c => c.ClaimStatus == "Pending")
                 .ToListAsync();
             return View(pendingClaims);

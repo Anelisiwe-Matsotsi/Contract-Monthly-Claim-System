@@ -1,82 +1,46 @@
-﻿﻿@{
-    ViewData["Title"] = " Lecturer Claims";
+﻿@model List<PROG6212_POE.Models.Claim>
+@{
+    ViewData["Title"] = "Lecturer Claims";
 }
+
 <div class="container mt-5">
-    <!--  -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="display-4 fw-bold">Lecturer Dashboard</h1>
-        <h2>My Claims</h2>
+        <a class="btn btn-primary" asp-action="Create">Submit New Claim</a>
+    </div>
 
-        <p>
-            <a class="btn btn-primary" asp-action="Create">Submit New Claim</a>
-        </p>
-
-        <table class="table table-bordered table-striped">
-            <thead>
+    <h2>My Claims</h2>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Claim Month</th>
+                <th>Hourly Rate</th>
+                <th>Total Hours</th>
+                <th>Total Amount</th>
+                <th>Status</th>
+                <th>Submission Date</th>
+                <th>Documents</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var claim in Model)
+            {
                 <tr>
-                    <th>Month</th>
-                    <th>Hourly Rate</th>
-                    <th>Total Hours</th>
-                    <th>Total Amount</th>
-                    <th>Status</th>
-                    <th>Submission Date</th>
-                    <th>Notes</th>
-                    <th>Documents</th>
+                    <td>@claim.Month</td>
+                    <td>@claim.HourlyRate.ToString("C")</td>
+                    <td>@claim.TotalHoursWorked</td>
+                    <td>@claim.TotalAmount.ToString("C")</td>
+                    <td>@claim.ClaimStatus</td>
+                    <td>@claim.SubmissionDate.ToShortDateString()</td>
+
+                    <td>
+                        @if (!string.IsNullOrEmpty(claim.DocumentFileName))
+                        {
+                            <a asp-action="Download" asp-route-fileName="@claim.DocumentFileName">@claim.DocumentFileName</a>
+                        }
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var claim in Model)
-                {
-                    <tr>
-                        <td>@claim.Month</td>
-                        <td>@claim.HourlyRate.ToString("C")</td>
-                        <td>@claim.TotalHoursWorked</td>
-                        <td>@claim.TotalAmount.ToString("C")</td>
-                        <td>@claim.ClaimStatus</td>
-                        <td>@claim.SubmissionDate.ToShortDateString()</td>
-                        <td>@claim.Notes</td>
-                        <td>
-                            @if (claim.Documents != null)
-                            {
-                                foreach (var doc in claim.Documents)
-                                {
-                                    <a asp-action="Download" asp-route-fileName="@doc.FileName">@doc.FileName</a>
-
-                                    <br />
-                                }
-                            }
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-</div>
-
-<!-- Notes / Support -->
-<div class="row mt-4">
-    <div class="col-md-4">
-        <div class="border rounded p-3 h-100">
-            <h6 class="fw-bold">Support</h6>
-            <p class="text-muted">Have a question? Contact your coordinator.</p>
-            <textarea class="form-control" rows="2" placeholder="Write a message..."></textarea>
-            <button class="btn btn-primary btn-sm mt-2 w-100">Send</button>
-        </div>
-    </div>
-
-    <div class="col-md-4">
-        <div class="border rounded p-3 h-100">
-            <h6 class="fw-bold">Notes</h6>
-            <textarea class="form-control" rows="3" placeholder="Add notes about this claim..."></textarea>
-        </div>
-    </div>
-
-    <div class="col-md-4">
-        <div class="border rounded p-3 h-100 text-center">
-            <h6 class="fw-bold">Files</h6>
-            <p class="text-muted">Drag & drop documents here or</p>
-            <a href="#" class="text-decoration-none">click to upload</a>
-        </div>
-    </div>
-</div>
+            }
+        </tbody>
+    </table>
 </div>

@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using Claim = PROG6212_POE.Models.Claim;
+using AspNetCoreGeneratedDocument;
 
 namespace PROG6212_POE.Controllers
 {
@@ -19,29 +21,29 @@ namespace PROG6212_POE.Controllers
             _context = context;
             _webHostEnvironment = webHostEnvironment;
         }
-        private static List<Lecturer> claims = new List<Lecturer>();
 
 
-        // Create a new claim
-        public IActionResult Create()
+        public async Task <IActionResult> Index()
         {
-            return View();
-        }
-        public static List<Lecturer> Claims ()
-        {
-            return claims;
-        }
+            var claims = await _context.Claim
+                .Include(c => c.Lecturer)
+                .ToListAsync();
 
-        public IActionResult Index()
-        {
             return View(claims);
         }
 
+        [HttpGet]
+        // Create a new claim
+        public IActionResult Create()
+        {
+            ViewBag.Lecturer = _context.Lecturer.ToList();
+            return View();
+        }
 
 
         [HttpPost]
         [RequestSizeLimit(500000)] /*C# Corner, 2024*/
-        public async Task<IActionResult> Create(Models.Claim claim, IFormFile uploadFile, int LecturerId, decimal TotalHoursWorked, decimal HourlyRate, string ClaimStatus)
+        public async Task<IActionResult> Create(IFormFile uploadFile, int TotalHoursWorked, decimal HourlyRate, string ClaimStatus, string Month, string Notes, int LecturerId)
         {
 
 
@@ -59,24 +61,29 @@ namespace PROG6212_POE.Controllers
                     var encryptedBytes = EncryptionHelper.EncryptFile(fileBytes);
                     System.IO.File.WriteAllBytes(path, encryptedBytes);
                 }
+            
                 decimal totalAmount = TotalHoursWorked * HourlyRate; 
 
-                claims.Add(new Lecturer
+                var claims = new Claim
                 {
                     LecturerId = LecturerId,
+                    Month = Month,
+                    SubmissionDate = DateTime.Now,
                     TotalHoursWorked = TotalHoursWorked,
                     HourlyRate = HourlyRate,
+                    TotalAmount = totalAmount,
+                    ClaimStatus = "Pending",
+                    Notes = Notes,
+                    DocumentFileName = fileName
 
-                });
-                _context.Claim.Add(claim);
+                };
+                _context.Claim.Add(claims);
                 await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
 
-            }
-            else
-            {
                 TempData["Message"] = "File exceeds limit";
-            }
-            return RedirectToAction("Index");
+                return View();
 
         }
 
