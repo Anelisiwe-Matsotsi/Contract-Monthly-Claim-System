@@ -10,7 +10,7 @@ using Claim = PROG6212_POE.Models.Claim;
 using AspNetCoreGeneratedDocument;
 
 namespace PROG6212_POE.Controllers
-{
+{ /*Troelsen and Japikse, 2021*/
     public class LecturerController : Controller
     {
         private readonly ApplicationDbContext _context; // database context
@@ -61,7 +61,11 @@ namespace PROG6212_POE.Controllers
                     var encryptedBytes = EncryptionHelper.EncryptFile(fileBytes);
                     System.IO.File.WriteAllBytes(path, encryptedBytes);
                 }
-            
+            if(uploadFile.Length > 500000)
+                {
+                    TempData["Message"] = "File exceeds limit";
+                    return View();
+                }
                 decimal totalAmount = TotalHoursWorked * HourlyRate; 
 
                 var claims = new Claim

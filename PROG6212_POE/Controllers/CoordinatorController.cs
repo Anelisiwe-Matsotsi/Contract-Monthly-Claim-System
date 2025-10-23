@@ -5,6 +5,7 @@ using System.IO;
 
 namespace PROG6212_POE.Controllers
 {
+    /*Troelson aand Japiske, 2021*/
     public class CoordinatorController : Controller
     {
         private readonly ApplicationDbContext _context; // Database context
@@ -81,3 +82,6 @@ namespace PROG6212_POE.Controllers
         }
     }
 }
+/*Reference List:
+ Troelsen,A. and Japikse, P. 2021.Pro C# 9 with .NET 5:Foundational Principles and Practices in Programming. 10th ed.Apress.
+ */

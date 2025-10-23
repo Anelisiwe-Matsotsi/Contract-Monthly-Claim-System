@@ -62,7 +62,7 @@
 
                     <!-- Notes -->
                     <div class="mb-3">
-                        <label asp-for="Notes" class="form-label fw-semibold">Notes (Optional)</label>
+                        <label asp-for="Notes" class="form-label fw-semibold">Notes</label>
                         <textarea asp-for="Notes" class="form-control" rows="3"
                                   placeholder="Add any comments or details about this claim..."></textarea>
                         <span asp-validation-for="Notes" class="text-danger"></span>
@@ -71,7 +71,7 @@
                     <!-- File Upload -->
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Attach Supporting Documents</label>
-                        <input type="file" name="uploadFile" class="form-control" required accept=".doc,.docx,.xls,.xlsx,.pdf" /> @* /* Stackoverflow, 2019*/ *@
+                        <input type="file" name="uploadFile" class="form-control" required accept=".doc,.docx,.xls,.xlsx,.pdf" /> <!--Stackoverflow, 2019-->
                     </div>
 
                     <!-- Submit -->
@@ -89,6 +89,6 @@
 }
 
 @* /*Reference List:
-Stackoverflow.2019.
+Stackoverflow.2019. How to restrict file type in FileUpload control [online].Avaliable at:<https://stackoverflow.com/questions/2780191/how-to-restrict-file-type-in-fileupload-control>. [Accessed 18 October 2025].
  Troelsen,A. and Japikse, P. 2021.Pro C# 9 with .NET 5:Foundational Principles and Practices in Programming. 10th ed.Apress.
  */ *@

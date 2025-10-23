@@ -561,6 +561,35 @@ nav ul li a:hover {
     align-items: center;
     padding: 40px 15px;
 }
+.scrollable-table {
+    max-height: 500px;
+    overflow-y: auto;
+    display: block;
+}
+    .scrollable-table table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+.table-container {
+    max-height: 500px;
+    overflow-y: auto;
+    display: block;
+}
+
+    .table-container table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+    .table-container thead th {
+        position: sticky;
+        top: 0;
+        background-color: #fff;
+        z-index: 10;
+    }
 
 .form-container {
     width: 100%;
