@@ -190,7 +190,22 @@ Part 3 ensures the system is ready for deployment with thorough testing, bug fix
 <img width="1908" height="887" alt="Image" src="https://github.com/user-attachments/assets/0bcd03a1-125a-4f99-be0d-bb81db07c64a" />
 
 ---
+## Part 2
 
+### Feedback:
+<img width="1920" height="1020" alt="Image" src="https://github.com/user-attachments/assets/b6d86494-6b2a-4483-8899-8210bb9f8d53" />
+
+### SQL Script:
+
+<img width="996" height="761" alt="Image" src="https://github.com/user-attachments/assets/f89ff800-3983-4665-8352-8fc329019a28" />
+
+<img width="992" height="767" alt="Image" src="https://github.com/user-attachments/assets/a78f4d0b-4edd-4769-88a6-e79c4ae0dce4" />
+
+<img width="963" height="623" alt="Image" src="https://github.com/user-attachments/assets/93b55c4a-48b3-457d-8ca7-a9213f1f9e8c" />
+
+### Youtube video:
+
+---
 ## 📚References:
 Draw.io. 2025. UML Class Diagram. [online]. ,Available at: <https://app.diagrams.net/>. [Accessed 12 September 2025].
 
