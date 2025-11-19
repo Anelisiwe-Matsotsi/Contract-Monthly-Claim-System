@@ -13,24 +13,26 @@
         <nav class="custom-nav"> <!--Pirrera, 2025-->
             <ul>
                 <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                <li><a asp-area="" asp-controller="User" asp-action="Index">Login</a></li>
+                <li><a asp-area="" asp-controller="Account" asp-action="Index">Login</a></li>
                 <li><a asp-area="" asp-controller="Lecturer" asp-action="Index">Lecturer</a></li>
                 <li><a asp-area="" asp-controller="Coordinator" asp-action="Index">Coordinator</a></li>
                 <li><a asp-area="" asp-controller="Manager" asp-action="Index">Manager</a></li> 
             </ul>
         </nav>
     </header>
-    <div class="container flex-grow-1">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
+          <main role="main" class="pb-3">
+             <div class="container flex-grow-1">
+                 @RenderBody()
+             </div>
+          </main>
+ 
+
+@*     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2025 - PROG6212_POE 
         </div>
-    </footer>
+    </footer> *@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

@@ -22,7 +22,7 @@ namespace PROG6212_POE.Models
 
         [Required(ErrorMessage = "Hours worked are required.")]
         [Range(1, 200, ErrorMessage = "Hours must be between 1 and 200.")]
-        public int TotalHoursWorked { get; set; }
+        public decimal TotalHoursWorked { get; set; }
 
         [Required(ErrorMessage = "Hourly rate is required.")]
         [Range(100, 1000, ErrorMessage = "Hourly rate must be between R100 and R1000.")]

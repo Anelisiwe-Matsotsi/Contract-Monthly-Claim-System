@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.Identity.Client;
+using System.ComponentModel.DataAnnotations;
 
 namespace PROG6212_POE.Models
 { /*Troelsen and Japikse, 2021*/
@@ -7,9 +8,9 @@ namespace PROG6212_POE.Models
         [Key]
 
         public int LecturerId { get; set; }
+        public int AccountId { get; set; }
 
- 
-        public string Name { get; set; }
+        public string FullName { get; set; }
 
         
         public string Department { get; set; }
@@ -25,7 +26,7 @@ namespace PROG6212_POE.Models
 
         public List<Claim> Claim { get; set; } = new();
 
-
+        public Account? Account { get; set; }
     }
 }
 /*Reference List:

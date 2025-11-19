@@ -24,10 +24,11 @@ namespace PROG6212_POE.Controllers
             return View(pendingClaims);
         }
         [HttpPost]
-        public async Task<IActionResult> Approve(int id)
+        public async Task<IActionResult> Approve(int id, string comments)
         {
             var claim = await _context.Claim.FindAsync(id);
-            if(claim == null)
+            claim.ClaimStatus = "Pending Manager Approval";
+            if (claim == null)
             {
                 return NotFound();
             }            
@@ -40,6 +41,7 @@ namespace PROG6212_POE.Controllers
                 ClaimId = id,
                 Decision = "Approved",
                 Role ="Coordinator",
+
                 ApprovalDate = DateTime.Now
             });
             await _context.SaveChangesAsync();

@@ -12,8 +12,6 @@ namespace PROG6212_POE.Models
         public int ClaimId { get; set; }
 
         [Required]
-        public int UserId { get; set; }
-        [Required]
         public string? FileName { get; set; }
         [Required]
         public string? FilePath { get; set; }

@@ -15,7 +15,7 @@ namespace PROG6212_POE.Models
         public DbSet<Claim> Claim { get; set; }
         public DbSet<SupportingDocument> SupportingDocument { get; set; }
         public DbSet<Approval> Approval { get; set; }
-        public DbSet<AppUser> AppUser { get; set; }
+        public DbSet<Account> Account { get; set; }
     }
 }
 /* Reference List:
