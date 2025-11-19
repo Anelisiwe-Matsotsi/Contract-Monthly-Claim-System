@@ -39,15 +39,21 @@ namespace PROG6212_POE.Controllers
             HttpContext.Session.SetString("AccountRole", validAccount.Role);
             HttpContext.Session.SetString("UserId", validAccount.Id.ToString());
 
-            if (validAccount.Role == "Admin")
+            switch (validAccount.Role)
             {
-                return RedirectToAction("Index", "Home");
+                case "Admin":
+                    return RedirectToAction("Index", "Home");
+                case "Coordinator":
+                    return RedirectToAction("Index", "Coordinator");
+                case "Manager":
+                    return RedirectToAction("Index", "Manager");
+                case "Lecturer":
+                    return RedirectToAction("Index", "Lecturer");
+                default:
+                    ViewBag.Error = "User role not recognized.";
+                    HttpContext.Session.Clear();
+                    return View("Index");
             }
-            else
-            {
-                return RedirectToAction("Index", "Lecturer");
-            }
-
         }
 
         [HttpPost]

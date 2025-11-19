@@ -19,6 +19,7 @@ namespace PROG6212_POE.Controllers
         {
             var pendingClaims = await _context.Claim
                 .Include(c => c.Lecturer)
+                //Coordinators ca only see claims that are pending
                 .Where(c => c.ClaimStatus == "Pending")
                 .ToListAsync();
             return View(pendingClaims);
@@ -26,13 +27,21 @@ namespace PROG6212_POE.Controllers
         [HttpPost]
         public async Task<IActionResult> Approve(int id, string comments)
         {
+            string approvedByUsername = HttpContext.Session.GetString("AccountUsername");
+            if (string.IsNullOrEmpty(approvedByUsername))
+            {
+                TempData["Message"] = "Session expired. Please log in again.";
+                return RedirectToAction("Index", "Account");
+            }
+
             var claim = await _context.Claim.FindAsync(id);
-            claim.ClaimStatus = "Pending Manager Approval";
+            
             if (claim == null)
             {
                 return NotFound();
-            }            
-            claim.ClaimStatus = "Approved by Coordinator";
+            }
+            claim.ClaimStatus = "Pending Manager Approval";
+            //claim.ClaimStatus = "Approved by Coordinator";
             _context.Claim.Update(claim);
             await _context.SaveChangesAsync();
 
@@ -41,7 +50,8 @@ namespace PROG6212_POE.Controllers
                 ClaimId = id,
                 Decision = "Approved",
                 Role ="Coordinator",
-
+                ApprovedBy = approvedByUsername,
+                Comments = comments,
                 ApprovalDate = DateTime.Now
             });
             await _context.SaveChangesAsync();
@@ -51,6 +61,12 @@ namespace PROG6212_POE.Controllers
         [HttpPost]
         public async Task<IActionResult> Reject(int id)
         {
+            string approvedByUsername = HttpContext.Session.GetString("AccountUsername");
+            if (string.IsNullOrEmpty(approvedByUsername))
+            {
+                TempData["Message"] = "Session expired. Please log in again.";
+                return RedirectToAction("Index", "Account");
+            }
             var claim = await _context.Claim.FindAsync(id);
             if (claim == null)
             {
@@ -65,7 +81,9 @@ namespace PROG6212_POE.Controllers
                 ClaimId = id,
                 Decision = "Rejected",
                 Role ="Coordinator",
-                ApprovalDate = DateTime.Now
+                ApprovedBy = approvedByUsername,
+                ApprovalDate = DateTime.Now,
+
             });
             await _context.SaveChangesAsync();
 
