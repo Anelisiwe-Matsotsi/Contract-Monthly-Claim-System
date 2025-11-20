@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using PROG6212_POE.Models;
 using System.Runtime.InteropServices;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace PROG6212_POE.Controllers
@@ -130,41 +131,112 @@ namespace PROG6212_POE.Controllers
             return View(reportData);
         }
 
-            public async Task<ReportData> GetReportData()
-            { 
+        public async Task<ReportData> GetReportData()
+        {
             var allClaims = await _context.Claim
                 .Include(c => c.Lecturer)
                 .ToListAsync();
 
-                var allLecturers = await _context.Lecturer.ToListAsync();
+            var allLecturers = await _context.Lecturer.ToListAsync();
 
-                var approvedClaims = allClaims
-                    .Where(c => c.ClaimStatus == "Approved by Manager")
-                    .ToList();
-                var pendingClaims = allClaims
-                    .Where(c => c.ClaimStatus.Contains("Pending"))
-                    .ToList();
-                var rejectedClaims = allClaims 
-                    .Where(c => c.ClaimStatus.Contains("Rejected"))
-                    .ToList();
+            var approvedClaims = allClaims
+                .Where(c => c.ClaimStatus == "Approved by Manager")
+                .ToList();
+            var pendingClaims = allClaims
+                .Where(c => c.ClaimStatus.Contains("Pending"))
+                .ToList();
+            var rejectedClaims = allClaims
+                .Where(c => c.ClaimStatus.Contains("Rejected"))
+                .ToList();
 
-                var totalApprovedAmount = approvedClaims.Sum(c => c.TotalAmount);
-                var averageHours = approvedClaims.Any() ? approvedClaims.Average(c => c.TotalHoursWorked) : 0;
+            var totalApprovedAmount = approvedClaims.Sum(c => c.TotalAmount);
+            var averageHoursWorked = approvedClaims.Any() ? approvedClaims.Average(c => c.TotalHoursWorked) : 0;
 
-                //Monnthly data
-                var monthlyData = approvedClaims
-                    .GroupBy(c => c.SubmissionDate.ToString("yyyy-MM"))
-                    .Select(g => new MonthlySumm
-                    {
-                        Month = g.Key,
-                        TotalApprovedAmount = g.Sum(c => c.TotalAmount),
-                        TotalClaims = g.Count()
-                    })
-                    .OrderByDescending(m => m.Month)
-                    .ToList();
+            //Monnthly data
+            var monthlyData = approvedClaims
+                .GroupBy(c => c.SubmissionDate.ToString("yyyy-MM"))
+                .Select(g => new MonthlySumm
+                {
+                    Month = g.Key,
+                    TotalApprovedAmount = g.Sum(c => c.TotalAmount),
+                    TotalClaims = g.Count()
+                })
+                .OrderByDescending(m => m.Month)
+                .ToList();
 
+            var topLecturers = approvedClaims
+                .Where(c => c.Lecturer != null)
+                .GroupBy(c => c.LecturerId)
+                .Select(g => new LecturerSumm
+                {
+                    LecturerName = g.First().Lecturer?.FullName,
+                    Department = g.First().Lecturer?.Department,
+                    TotalApprovedAmount = g.Sum(c => c.TotalAmount),
+                    TotalClaims = g.Count()
+                })
+                .OrderDescending(x => x.TotalApprovedAmount)
+                .Take(5)
+                .ToList();
 
-                return View(claims);
+            return new ReportData
+            {
+                AllClaims = allClaims,
+                ApprovedClaims = approvedClaims,
+                PendingClaims = pendingClaims,
+                RejectedClaims = rejectedClaims,
+                Lecturer = allLecturers,
+                TotalApprovedAmount = totalApprovedAmount,
+                AverageHoursWorked = averageHoursWorked,
+                MonthlyData = monthlyData,
+                TopLecturers = topLecturers
+            };
+        }
+
+        public  async Task<IActionResult> ViewInvoice(int claimId)
+        {
+            if(HttpContext.Session.GetString("AccountRole") != "HR")
+            {
+                return RedirectToAction("Index", "Account");
+            }
+
+            var claims = await _context.Claim
+                .Include(c => c.Lecturer)
+                .FirstOrDefaultAsync(c => c.ClaimId == claimId);
+
+            if (claims == null)
+            {
+                TempData["Message"] = "Claim not found.";
+                return RedirectToAction("GenerateReport");
+            }
+
+            return View(claims);
+        }
+
+        public async Task<IActionResult> LecturerReport (int lecturerId)
+        {
+            if (HttpContext.Session.GetString("AccountRole") != "HR")
+            {
+                return RedirectToAction("Index", "Account");
+            }
+            var lecturerClaims = await _context.Claim
+                .Include(c => c.Lecturer)
+                .Where(c => c.LecturerId == lecturerId)
+                .OrderByDescending(c => c.SubmissionDate)
+                .ToListAsync();
+
+            var lecturer = await _context.Lecturer
+                .FindAsync(lecturerId);
+
+            ViewBag.LecturerName = lecturer?.FullName;
+            return View(lecturerClaims);
+        }
+
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Account");
+        }
         }
     }
-}
+

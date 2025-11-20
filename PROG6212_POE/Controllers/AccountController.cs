@@ -71,7 +71,6 @@ namespace PROG6212_POE.Controllers
         {
             // Clear the session to log out the user
             HttpContext.Session.Clear();
-            TempData["Message"] = "You have been logged out successfully.";
             return RedirectToAction("Index");
         }
 

@@ -5,6 +5,6 @@
         public string LecturerName { get; set; } = string.Empty;
         public string  Department { get; set; } = string.Empty;
         public int TotalClaims { get; set; }
-        public decimal TotalAmount { get; set; }
+        public decimal TotalApprovedAmount { get; set; }
     }
 }
