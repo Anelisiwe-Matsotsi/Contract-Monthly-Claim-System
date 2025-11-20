@@ -39,6 +39,12 @@ namespace PROG6212_POE.Controllers
             HttpContext.Session.SetString("AccountRole", validAccount.Role);
             HttpContext.Session.SetString("UserId", validAccount.Id.ToString());
 
+            var lecturer = _context.Lecturer.FirstOrDefault(l => l.AccountId == validAccount.Id);
+            if (lecturer != null)
+            {
+                HttpContext.Session.SetString("LecturerId", lecturer.LecturerId.ToString());
+            }
+
             switch (validAccount.Role)
             {
                 case "Admin":
