@@ -7,5 +7,7 @@
         public string? Password { get; set; } 
 
         public string? Role { get; set; } //Admin, Coordinator, Manager, Lecturer
+
+        public List <Lecturer> Lecturer { get; set; } = new();
     }
 }

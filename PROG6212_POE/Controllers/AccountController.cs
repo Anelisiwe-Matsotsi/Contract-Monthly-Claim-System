@@ -47,6 +47,8 @@ namespace PROG6212_POE.Controllers
 
             switch (validAccount.Role)
             {
+                case "HR":
+                    return RedirectToAction("Index", "HR");
                 case "Admin":
                     return RedirectToAction("Index", "Home");
                 case "Coordinator":
