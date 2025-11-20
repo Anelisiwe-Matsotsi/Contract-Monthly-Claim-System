@@ -13,11 +13,38 @@
         <nav class="custom-nav"> <!--Pirrera, 2025-->
             <ul>
                 <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                <li><a asp-area="" asp-controller="Account" asp-action="Index">Login</a></li>
-                <li><a asp-area="" asp-controller="HR" asp-action="Index">HR</a></li>
-                <li><a asp-area="" asp-controller="Lecturer" asp-action="Index">Lecturer</a></li>
-                <li><a asp-area="" asp-controller="Coordinator" asp-action="Index">Coordinator</a></li>
-                <li><a asp-area="" asp-controller="Manager" asp-action="Index">Manager</a></li> 
+                @if (Context.Session.GetString("AccountUsername") == null)
+                {
+                    <li><a asp-area="" asp-controller="Account" asp-action="Index">Login</a></li>
+                }
+                else
+                {
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                            Welcome, @Context.Session.GetString("AccountUsername")
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a></li>
+                        </ul>
+                    </li>
+                }
+                @if (Context.Session.GetString("AccountRole") == "HR")
+                {
+                    <li><a asp-area="" asp-controller="HR" asp-action="Index">HR</a></li>
+                }
+                @if (Context.Session.GetString("AccountRole") == "Lecturer")
+                {
+                    <li><a asp-area="" asp-controller="Lecturer" asp-action="Index">Lecturer</a></li>
+                }
+                @if (Context.Session.GetString("AccountRole") == "Coordinator")
+                {
+                    <li><a asp-area="" asp-controller="Coordinator" asp-action="Index">Coordinator</a></li>
+                }
+                @if (Context.Session.GetString("AccountRole") == "Manager")
+                {
+                    <li><a asp-area="" asp-controller="Manager" asp-action="Index">Manager</a></li>
+                }
+                
             </ul>
         </nav>
     </header>

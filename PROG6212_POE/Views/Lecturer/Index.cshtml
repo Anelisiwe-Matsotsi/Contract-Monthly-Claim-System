@@ -1,53 +1,82 @@
 ﻿@model List<PROG6212_POE.Models.Claim>
 @{
-    ViewData["Title"] = "Lecturer Claims";
+    ViewData["Title"] = "My Claims";
 }
 @* /*Troelson and Japiske, 2021*/ *@
-<main class="flex-fill">
+
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="display-4 fw-bold">Lecturer Dashboard</h1>
-        <a class="btn btn-primary" asp-action="Create">Submit New Claim</a>
+        <div>
+            <a class="btn btn-primary me-2" asp-action="Create">Submit New Claim</a>
+            <a class="btn btn-outline-secondary" asp-action="Logout" asp-controller="Lecturer">Logout</a>
+        </div>
     </div>
+
+    @if (TempData["MessageSuccess"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["MessageSuccess"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
 
     <h2>My Claims</h2>
-    <div class="table-container">
-    <table class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th>Claim Month</th>
-                <th>Hourly Rate</th>
-                <th>Total Hours</th>
-                <th>Total Amount</th>
-                <th>Status</th>
-                <th>Submission Date</th>
-                <th>Documents</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var claim in Model)
-            {
-                <tr>
-                    <td>@claim.Month</td>
-                    <td>@claim.HourlyRate.ToString("C")</td>
-                    <td>@claim.TotalHoursWorked</td>
-                    <td>@claim.TotalAmount.ToString("C")</td>
-                    <td>@claim.ClaimStatus</td>
-                    <td>@claim.SubmissionDate.ToShortDateString()</td>
-
-                    <td>
-                        @if (!string.IsNullOrEmpty(claim.DocumentFileName))
-                        {
-                            <a asp-action="Download" asp-route-fileName="@claim.DocumentFileName">@claim.DocumentFileName</a>
-                        }
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    </div>
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            You haven't submitted any claims yet. <a asp-action="Create">Submit your claim</a>.
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Month</th>
+                        <th>Hours Worked</th>
+                        <th>Hourly Rate</th>
+                        <th>Total Amount</th>
+                        <th>Status</th>
+                        <th>Submission Date</th>
+                        <th>Document</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var claim in Model)
+                    {
+                        <tr>
+                            <td>@claim.Month</td>
+                            <td>@claim.TotalHoursWorked</td>
+                            <td>R @claim.HourlyRate</td>
+                            <td>R @claim.TotalAmount</td>
+                            <td>
+                                <span class="badge
+                                    @(claim.ClaimStatus == "Approved by Manager" ? "bg-success" :
+                                      claim.ClaimStatus.Contains("Rejected") ? "bg-danger" :
+                                      claim.ClaimStatus.Contains("Pending") ? "bg-warning" : "bg-secondary")">
+                                    @claim.ClaimStatus
+                                </span>
+                            </td>
+                            <td>@claim.SubmissionDate.ToString("yyyy-MM-dd")</td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(claim.DocumentFileName))
+                                {
+                                    <a asp-action="Download" asp-route-fileName="@claim.DocumentFileName"
+                                       class="btn btn-sm btn-outline-primary">
+                                        Download
+                                    </a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
 </div>
-</main>
 @* /*Reference List:
 Troelsen,A. and Japikse, P. 2021.Pro C# 9 with .NET 5:Foundational Principles and Practices in Programming. 10th ed.Apress.
  */ *@

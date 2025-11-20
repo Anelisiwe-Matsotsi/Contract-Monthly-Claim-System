@@ -25,9 +25,17 @@ namespace PROG6212_POE.Controllers
 
         public async Task <IActionResult> Index()
         {
-
+            var lecturerId = HttpContext.Session.GetString("LecturerId");
+            if (string.IsNullOrEmpty(lecturerId))
+            {
+                TempData["Message"] = "Session expired. Please log in again.";
+                return RedirectToAction("Index", "Account");
+            }
+            //REFERERNCE THIS 
             var claims = await _context.Claim
                 .Include(c => c.Lecturer)
+                .Where(c => c.LecturerId == int.Parse(lecturerId))
+                .OrderByDescending(c => c.SubmissionDate)
                 .ToListAsync();
 
             return View(claims);
@@ -37,29 +45,60 @@ namespace PROG6212_POE.Controllers
         // Create a new claim
         public IActionResult Create()
         {
-            ViewBag.Lecturer = _context.Lecturer.ToList();
+            var lecturerId = HttpContext.Session.GetString("LecturerId");
+            if(string.IsNullOrEmpty(lecturerId))
+            {
+                TempData["Message"] = "Session expired. Please log in again.";
+                return RedirectToAction("Index", "Account");
+            }
+
+            var lecturer = _context.Lecturer
+                .FirstOrDefault(l => l.LecturerId == int.Parse(lecturerId));
+
+            if (lecturer == null)
+            {
+                TempData["Message"] = "Lecturer not found.";
+                return RedirectToAction("Index", "Account");
+            }
+            ViewBag.LecturerHourlyRate = lecturer.HourlyRate;
+            ViewBag.LecturerName = lecturer.FullName;
             return View();
         }
 
 
         [HttpPost]
         [RequestSizeLimit(500000)] /*C# Corner, 2024*/
-        public async Task<IActionResult> Create(IFormFile uploadFile, int TotalHoursWorked, decimal HourlyRate, string ClaimStatus, string Month, string Notes, int LecturerId)
+        public async Task<IActionResult> Create(IFormFile uploadFile, int TotalHoursWorked, string Month, string Notes)
         {
+            var lecturerId = HttpContext.Session.GetString("LecturerId");
+            if (string.IsNullOrEmpty(lecturerId))
+            {
+                TempData["Message"] = "Session expired. Please log in again.";
+                return RedirectToAction("Index", "Account");
+            }
 
             /*Troelsen and Japikse, 2021*/
-            var lecturer = await _context.Lecturer.FindAsync(LecturerId);
-            if(lecturer == null)
+            var lecturer = await _context.Lecturer.FindAsync(int.Parse(lecturerId));
+            if (lecturer == null)
             {
                 ViewBag.Error = "Lecturer not found.";
-                return View();
+                return View("Index", "Account");
             }
 
             // validate hours worked (max is 180 hours per month)
             if (TotalHoursWorked > 180)
             {
                 ModelState.AddModelError("TotalHoursWorked", "Total hours worked cannot exceed 180 hours per month.");
-                ViewBag.Lecturer = _context.Lecturer.ToList();
+                ViewBag.LecturerHourlyRate = lecturer.HourlyRate;
+                ViewBag.Lecturer = lecturer.FullName;
+                return View();
+            }
+
+            if(TotalHoursWorked <= 0)
+            {
+                ModelState.AddModelError("TotalHoursWorked", "Total hours worked must be greater than 0.");
+                ViewBag.LecturerHourlyRate = lecturer.HourlyRate;
+                ViewBag.Lecturer = lecturer.FullName;
                 return View();
             }
 
@@ -82,11 +121,11 @@ namespace PROG6212_POE.Controllers
                     TempData["Message"] = "File exceeds limit";
                     return View();
                 }
-                decimal totalAmount = TotalHoursWorked * HourlyRate; 
+                decimal totalAmount = TotalHoursWorked * lecturer.HourlyRate; 
 
                 var claims = new Claim
                 {
-                    LecturerId = LecturerId,
+                   LecturerId = int.Parse(lecturerId),
                     Month = Month,
                     SubmissionDate = DateTime.Now,
                     TotalHoursWorked = TotalHoursWorked,
@@ -99,6 +138,7 @@ namespace PROG6212_POE.Controllers
                 };
                 _context.Claim.Add(claims);
                 await _context.SaveChangesAsync();
+                TempData["MessageSuccess"] = "Claim submitted successfully.";
                 return RedirectToAction("Index");
             }
 
@@ -114,6 +154,15 @@ namespace PROG6212_POE.Controllers
             var encryptedBytes = System.IO.File.ReadAllBytes(path);
             var decryptedBytes = EncryptionHelper.DecryptFile(encryptedBytes);
             return File(decryptedBytes, "application/octet-stream", fileName);
+        }
+
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            //Clear the session to log out the user
+            HttpContext.Session.Clear();
+            TempData["Message"] = "You have been logged out successfully.";
+            return RedirectToAction("Index", "Account");
         }
     }
 }

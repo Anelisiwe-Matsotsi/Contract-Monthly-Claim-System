@@ -39,12 +39,14 @@ namespace PROG6212_POE.Controllers
             HttpContext.Session.SetString("AccountRole", validAccount.Role);
             HttpContext.Session.SetString("UserId", validAccount.Id.ToString());
 
-            var lecturer = _context.Lecturer.FirstOrDefault(l => l.AccountId == validAccount.Id);
-            if (lecturer != null)
+            if (validAccount.Role == "Lecturer")
             {
-                HttpContext.Session.SetString("LecturerId", lecturer.LecturerId.ToString());
-            }
-
+                var lecturer = _context.Lecturer.FirstOrDefault(l => l.AccountId == validAccount.Id);
+                if (lecturer != null)
+                {
+                    HttpContext.Session.SetString("LecturerId", lecturer.LecturerId.ToString());
+                }
+        }
             switch (validAccount.Role)
             {
                 case "HR":
@@ -69,8 +71,11 @@ namespace PROG6212_POE.Controllers
         {
             // Clear the session to log out the user
             HttpContext.Session.Clear();
+            TempData["Message"] = "You have been logged out successfully.";
             return RedirectToAction("Index");
         }
+
+
     }
 }
 /*Reference List:

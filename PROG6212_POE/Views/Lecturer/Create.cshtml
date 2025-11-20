@@ -1,6 +1,8 @@
 ﻿@model PROG6212_POE.Models.Claim
 @{
     ViewData["Title"] = "Submit Claim";
+    var hourlyRate = ViewBag.LecturerHourlyRate;
+    var lecturerName = ViewBag.LecturerName;
 }
 @* /*Troelson and Japiske, 2021*/ *@
 
@@ -20,58 +22,61 @@
                 @TempData["Message"]
                 </div>
         }
+        @if (TempData["MessageSuccess"] != null)
+        {
+            <div class="alert alert-danger" role="alert">
+                @TempData["MessageSuccess"]
+            </div>
+        }
 
         <div class="card shadow-sm border-0">
             <div class="card-body p-4">
                 <form asp-action="Create" method="post" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                    <!-- Lecturer Dropdown -->
+                    <!-- Lecturer Information -->
                     <div class="mb-3">
-                        <label asp-for="LecturerId" class="form-label fw-semibold">Select Lecturer</label>
-                        <select asp-for="LecturerId" class="form-control" required>
-                            <option value="">-- Select Lecturer --</option>
-                            @foreach (var lecturer in ViewBag.Lecturer)
-                            {
-                                    <option value="@lecturer.LecturerId">@lecturer.FullName</option>
-                            }
-                        </select>
-                        <span asp-validation-for="LecturerId" class="text-danger"></span>
+                        <label class="form-label fw-semibold">Lecturer</label>
+                        <input type="text" class="form-control" value="@lecturerName" readonly />
+                        <small class="text-muted">Your name as registered by HR</small>
+                    </div>
+
+                    <!-- Hourly Rate Display -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Hourly Rate</label>
+                        <input type="text" class="form-control" value="R @hourlyRate" readonly />
+                        <small class="text-muted">Your hourly rate as set by HR</small>
                     </div>
 
                     <!-- Claim Month -->
                     <div class="mb-3">
-                        <label asp-for="Month" class="form-label fw-semibold">Claim Month</label>
-                        <input asp-for="Month" type="month" class="form-control" required />
-                        <span asp-validation-for="Month" class="text-danger"></span>
+                        <label for="Month" class="form-label fw-semibold">Claim Month</label>
+                        <input name="Month" type="month" class="form-control" required />
+                        <span class="text-danger"></span>
                     </div>
 
                     <!-- Hours Worked -->
                     <div class="mb-3">
-                        <label asp-for="TotalHoursWorked" class="form-label fw-semibold">Total Hours Worked</label>
-                        <input asp-for="TotalHoursWorked" type="number" class="form-control" required />
-                        <span asp-validation-for="TotalHoursWorked" class="text-danger"></span>
-                    </div>
-
-                    <!-- Hourly Rate -->
-                    <div class="mb-3">
-                        <label asp-for="HourlyRate" class="form-label fw-semibold">Hourly Rate (R)</label>
-                        <input asp-for="HourlyRate" type="number" class="form-control" step="0.01" required />
-                        <span asp-validation-for="HourlyRate" class="text-danger"></span>
+                        <label for="TotalHoursWorked" class="form-label fw-semibold">Total Hours Worked</label>
+                        <input name="TotalHoursWorked" type="number" class="form-control"
+                               min="1" max="180" required />
+                        <small class="text-muted">Maximum 180 hours per month</small>
+                        <span class="text-danger"></span>
                     </div>
 
                     <!-- Notes -->
                     <div class="mb-3">
-                        <label asp-for="Notes" class="form-label fw-semibold">Notes</label>
-                        <textarea asp-for="Notes" class="form-control" rows="3"
+                        <label for="Notes" class="form-label fw-semibold">Notes</label>
+                        <textarea name="Notes" class="form-control" rows="3"
                                   placeholder="Add any comments or details about this claim..."></textarea>
-                        <span asp-validation-for="Notes" class="text-danger"></span>
                     </div>
 
                     <!-- File Upload -->
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Attach Supporting Documents</label>
-                        <input type="file" name="uploadFile" class="form-control" required accept=".doc,.docx,.xls,.xlsx,.pdf" /> <!--Stackoverflow, 2019-->
+                        <label class="form-label fw-semibold">Attach Supporting Document</label>
+                        <input type="file" name="uploadFile" class="form-control" required
+                               accept=".pdf,.doc,.docx,.xls,.xlsx" />
+                        <small class="text-muted">Maximum file size: 500KB (PDF, Word, Excel files only)</small>
                     </div>
 
                     <!-- Submit -->
