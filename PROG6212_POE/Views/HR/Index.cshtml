@@ -1,0 +1,43 @@
+﻿@model List<PROG6212_POE.Models.Account>
+
+@{
+    ViewData["Title"] = "HR Dashboard";
+}
+
+<div class="container mt-4">
+    <h1 class="display-4 fw-bold">HR Dashboard</h1>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>User Management</h2>
+        <a class="btn btn-primary" asp-action="Create">Create New User</a>
+        <a class="btn btn-success" asp-action="GenerateReport">Generate Reports</a>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Role</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Hourly Rate</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var account in Model)
+            {
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@account.Id" class="btn btn-warning btn-sm">Edit</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

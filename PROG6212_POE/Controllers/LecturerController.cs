@@ -46,9 +46,24 @@ namespace PROG6212_POE.Controllers
         public async Task<IActionResult> Create(IFormFile uploadFile, int TotalHoursWorked, decimal HourlyRate, string ClaimStatus, string Month, string Notes, int LecturerId)
         {
 
-
-            //Handle file upload
             /*Troelsen and Japikse, 2021*/
+            var lecturer = await _context.Lecturer.FindAsync(LecturerId);
+            if(lecturer == null)
+            {
+                ViewBag.Error = "Lecturer not found.";
+                return View();
+            }
+
+            // validate hours worked (max is 180 hours per month)
+            if (TotalHoursWorked > 180)
+            {
+                ModelState.AddModelError("TotalHoursWorked", "Total hours worked cannot exceed 180 hours per month.");
+                ViewBag.Lecturer = _context.Lecturer.ToList();
+                return View();
+            }
+
+            /*Troelsen and Japikse, 2021*/
+            //Handle file upload
             if (uploadFile != null && uploadFile.Length > 0)
             {
                 var fileName = Path.GetFileName(uploadFile.FileName);
@@ -74,7 +89,7 @@ namespace PROG6212_POE.Controllers
                     Month = Month,
                     SubmissionDate = DateTime.Now,
                     TotalHoursWorked = TotalHoursWorked,
-                    HourlyRate = HourlyRate,
+                    HourlyRate = lecturer.HourlyRate,
                     TotalAmount = totalAmount,
                     ClaimStatus = "Pending",
                     Notes = Notes,
@@ -87,6 +102,7 @@ namespace PROG6212_POE.Controllers
             }
 
                 TempData["Message"] = "File exceeds limit";
+                ViewBag.Lecturer = _context.Lecturer.ToList();
                 return View();
 
         }

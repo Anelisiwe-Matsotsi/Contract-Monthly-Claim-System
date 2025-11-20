@@ -1,0 +1,71 @@
+﻿@model PROG6212_POE.Models.Account
+@{
+    ViewData["Title"] = "Create User";
+}
+
+<div class="container mt-4">
+    <h1 class="display-4 fw-bold">Create New User</h1>
+
+    <div class="card shadow-sm mt-4">
+        <div class="card-body">
+            <form asp-sction="Create" method="post">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4>Account Information</h4>
+
+                        <div class="mb-3">
+                            <label asp-for="Username" class="form-label">Username</label>
+                            <input asp-for="Username" class="form-control" required/>
+                            <span asp-validation-for="Username" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Password" class="form-label">Password</label>
+                            <input asp-for="Password" class="form-control" required />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Role" class="form-label">Role</label>
+                            <select asp-for="Role" class="form-control" required>
+                                <option value="">-- Select Role --</option>
+                                <option value="HR">HR</option>
+                                <option value="Admin">Admin</option>
+                                <option value="Coordinator">Coordinator</option>
+                                <option value="Manager">Manager</option>
+                                <option value="Lecturer">Lecturer</option>
+                            </select>
+                            <span asp-validation-for="Role" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h4>Lecturer Information <small class="text-muted">(Only for Lecturer)</small></h4>
+
+                        <div class="mb-3 lecturer-info">
+                            <label for="fullName" class="form-label">Full Name</label>
+                            <input type="text" id="fullName" name="fullName" class="form-control" />
+                        </div>
+
+                        <div class="mb-3 lecturer-info">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" id="email" name="email" class="form-control" />
+                        </div>
+
+                        <div class="mb-3 lecturer-info">
+                            <label for="department" class="form-label">Department</label>
+                            <input type="text" id="department" name="department" class="form-control" />
+                        </div>
+
+                        <div class="mb-3 lecturer-info">
+                            <label for="hourlyRate" class="form-label">Hourly Rate (R)</label>
+                            <input type="number" id="hourlyRate" name="hourlyRate" class="form-control" step="0.01" min="100" max="1000" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary">Create User</button>
+                    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
