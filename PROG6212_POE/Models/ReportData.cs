@@ -9,7 +9,7 @@
         public List<Lecturer> Lecturer { get; set; } = new();
 
         public decimal TotalApprovedAmount { get; set; }
-        public double AverageHoursWorked { get; set; }
+        public decimal AverageHoursWorked { get; set; }
         public List<MonthlySumm> MonthlyData { get; set; } = new();
         public List<LecturerSumm> TopLecturers { get; set; } = new();
     }

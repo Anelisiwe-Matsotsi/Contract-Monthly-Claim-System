@@ -1,0 +1,79 @@
+﻿@model List<PROG6212_POE.Models.Claim>
+@{
+    ViewData["Title"] = "Lecturer Report";
+}
+
+<div class="container mt-4">
+    <h1 class="display-4 fw-bold">Lecturer Report: @ViewBag.LecturerName</h1>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h4>Claim History</h4>
+
+            @if (Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Month</th>
+                                <th>Hours</th>
+                                <th>Rate</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Submission Date</th>
+                                <th>Invoice</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var claim in Model)
+                            {
+                                <tr>
+                                    <td>@claim.Month</td>
+                                    <td>@claim.TotalHoursWorked</td>
+                                    <td>R@(claim.HourlyRate.ToString("F2"))</td>
+                                    <td>R@(claim.TotalAmount.ToString("F2"))</td>
+                                    <td>
+                                        <span class="badge @(claim.ClaimStatus == "Approved by Manager" ? "bg-success" :
+                                                          claim.ClaimStatus.Contains("Pending") ? "bg-warning" : "bg-danger")">
+                                            @claim.ClaimStatus
+                                        </span>
+                                    </td>
+                                    <td>@claim.SubmissionDate.ToString("yyyy-MM-dd")</td>
+                                    <td>
+                                        <a asp-action="ViewInvoice" asp-route-claimId="@claim.ClaimId"
+                                           class="btn btn-sm btn-outline-primary">View</a>
+                                        <form asp-action="DownloadInvoicePdf" method="post" class="d-inline">
+                                            <input type="hidden" name="claimId" value="@claim.ClaimId" />
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">PDF</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="row mt-4 p-3 bg-light rounded">
+                    <div class="col-md-4">
+                        <strong>Total Claims:</strong> @Model.Count
+                    </div>
+                    <div class="col-md-4">
+                        <strong>Total Amount:</strong> R@(Model.Sum(c => c.TotalAmount).ToString("F2"))
+                    </div>
+                    <div class="col-md-4">
+                        <strong>Average Hours:</strong> @(Model.Average(c => c.TotalHoursWorked).ToString("F1"))
+                    </div>
+                </div>
+            }
+            else
+            {
+                <p class="text-muted">No claims found for this lecturer.</p>
+            }
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a asp-action="GenerateReport" class="btn btn-secondary">Back to Reports</a>
+    </div>
+</div>

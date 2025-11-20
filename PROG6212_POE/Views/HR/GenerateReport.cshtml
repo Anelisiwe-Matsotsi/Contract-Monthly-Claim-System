@@ -1,0 +1,260 @@
+﻿@model PROG6212_POE.Models.ReportData
+
+@{
+    ViewData["Title"] = "HR Report";
+}
+
+<div class="container mt-4">
+    <h1 class="display-4 fw-bold">HR Reports & Analytics</h1>
+    <p class="text-muted">Generated on: @DateTime.Now.ToString("yyyy-MM-dd HH:mm")</p>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["Message"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- PDF Download Buttons -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h5>Download Reports as PDF</h5>
+            <form asp-action="DownloadPdfReport" method="post" class="d-inline me-2">
+                <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-file-pdf"></i> Download Full PDF Report
+                </button>
+            </form>
+            <small class="text-muted">Downloads comprehensive report with all statistics</small>
+        </div>
+    </div>
+
+    <!-- Summary Statistics -->
+    <div class="row mb-4">
+        <div class="col-md-2">
+            <div class="card text-white bg-primary">
+                <div class="card-body text-center">
+                    <h4>@Model.AllClaims.Count</h4>
+                    <small>Total Claims</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card text-white bg-success">
+                <div class="card-body text-center">
+                    <h4>@Model.ApprovedClaims.Count</h4>
+                    <small>Approved</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card text-white bg-warning">
+                <div class="card-body text-center">
+                    <h4>@Model.PendingClaims.Count</h4>
+                    <small>Pending</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card text-white bg-danger">
+                <div class="card-body text-center">
+                    <h4>@Model.RejectedClaims.Count</h4>
+                    <small>Rejected</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card text-white bg-info">
+                <div class="card-body text-center">
+                    <h4>R@(Model.TotalApprovedAmount.ToString("F2"))</h4>
+                    <small>Total Approved</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card text-white bg-secondary">
+                <div class="card-body text-center">
+                    <h4>@(Model.AverageHoursWorked.ToString("F1"))</h4>
+                    <small>Average Hours</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Monthly Breakdown -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-light">
+            <h4 class="mb-0">Monthly Breakdown</h4>
+        </div>
+        <div class="card-body">
+            @if (Model.MonthlyData.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Month</th>
+                                <th>Claims</th>
+                                <th>Total Amount</th>
+                                <th>Average per Claim</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var month in Model.MonthlyData)
+                            {
+                                <tr>
+                                    <td>@month.Month</td>
+                                    <td>@month.TotalClaims</td>
+                                    <td>R@(month.TotalApprovedAmount.ToString("F2"))</td>
+                                    <td>R@((month.TotalApprovedAmount / month.TotalClaims).ToString("F2"))</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <p class="text-muted">No monthly data available.</p>
+            }
+        </div>
+    </div>
+
+    <!-- Top Lecturers -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-light">
+            <h4 class="mb-0">Top Lecturers by Earnings</h4>
+        </div>
+        <div class="card-body">
+            @if (Model.TopLecturers.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Lecturer</th>
+                                <th>Department</th>
+                                <th>Claims</th>
+                                <th>Total Amount</th>
+                                <th>Average per Claim</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var lecturer in Model.TopLecturers)
+                            {
+                                <tr>
+                                    <td>@lecturer.LecturerName</td>
+                                    <td>@lecturer.Department</td>
+                                    <td>@lecturer.TotalClaims</td>
+                                    <td>R@(lecturer.TotalApprovedAmount.ToString("F2"))</td>
+                                    <td>R@((lecturer.TotalApprovedAmount / lecturer.TotalClaims).ToString("F2"))</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <p class="text-muted">No lecturer data available.</p>
+            }
+        </div>
+    </div>
+
+    <!-- Approved Claims Details -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-light">
+            <h4 class="mb-0">Approved Claims Details</h4>
+        </div>
+        <div class="card-body">
+            @if (Model.ApprovedClaims.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Lecturer</th>
+                                <th>Month</th>
+                                <th>Hours</th>
+                                <th>Hourly Rate</th>
+                                <th>Total Amount</th>
+                                <th>Submission Date</th>
+                                <th>Invoice</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var claim in Model.ApprovedClaims)
+                            {
+                                <tr>
+                                    <td>@claim.Lecturer?.FullName</td>
+                                    <td>@claim.Month</td>
+                                    <td>@claim.TotalHoursWorked</td>
+                                    <td>R@(claim.HourlyRate.ToString("F2"))</td>
+                                    <td>R@(claim.TotalAmount.ToString("F2"))</td>
+                                    <td>@claim.SubmissionDate.ToString("yyyy-MM-dd")</td>
+                                    <td>
+                                        <a asp-action="ViewInvoice" asp-route-claimId="@claim.ClaimId"
+                                           class="btn btn-sm btn-outline-primary">View Invoice</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <p class="text-muted">No approved claims found.</p>
+            }
+        </div>
+    </div>
+
+    <!-- Lecturer Reports -->
+    <div class="card shadow-sm">
+        <div class="card-header bg-light">
+            <h4 class="mb-0">Individual Lecturer Reports</h4>
+        </div>
+        <div class="card-body">
+            @if (Model.Lecturer.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Lecturer Name</th>
+                                <th>Department</th>
+                                <th>Email</th>
+                                <th>Hourly Rate</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var lecturer in Model.Lecturer)
+                            {
+                                <tr>
+                                    <td>@lecturer.FullName</td>
+                                    <td>@lecturer.Department</td>
+                                    <td>@lecturer.Email</td>
+                                    <td>R@(lecturer.HourlyRate.ToString("F2"))</td>
+                                    <td>
+                                        <a asp-action="LecturerReport" asp-route-lecturerId="@lecturer.LecturerId"
+                                           class="btn btn-sm btn-outline-primary">View Report</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <p class="text-muted">No lecturers found.</p>
+            }
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a asp-action="Index" class="btn btn-secondary">Back to User Management</a>
+        <a asp-action="Logout" class="btn btn-outline-danger float-end">Logout</a>
+    </div>
+</div>
