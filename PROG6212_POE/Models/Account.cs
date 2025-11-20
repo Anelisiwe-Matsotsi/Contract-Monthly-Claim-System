@@ -8,6 +8,6 @@
 
         public string? Role { get; set; } //Admin, Coordinator, Manager, Lecturer
 
-        public List <Lecturer> Lecturer { get; set; } = new();
+        public Lecturer? Lecturer { get; set; } 
     }
 }

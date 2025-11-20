@@ -25,6 +25,7 @@ namespace PROG6212_POE.Controllers
 
         public async Task <IActionResult> Index()
         {
+
             var claims = await _context.Claim
                 .Include(c => c.Lecturer)
                 .ToListAsync();

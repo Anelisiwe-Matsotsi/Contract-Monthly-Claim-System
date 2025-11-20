@@ -10,15 +10,15 @@ namespace PROG6212_POE.Models
         public int LecturerId { get; set; }
         public int AccountId { get; set; }
 
-        public string FullName { get; set; }
+        public string? FullName { get; set; }
 
         
-        public string Department { get; set; }
+        public string? Department { get; set; }
 
 
-        public string Email { get; set; }
+        public string? Email { get; set; }
  
-        public  string Password { get; set; }
+        public  string? Password { get; set; }
      
         public decimal HourlyRate { get; set; }
         public decimal TotalHoursWorked { get; set; }

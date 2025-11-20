@@ -28,11 +28,11 @@
             @foreach(var account in Model)
             {
                 <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td>@account.Username</td>
+                    <td>@account.Role</td>
+                    <td>@account.Lecturer?.FullName</td>
+                    <td>@account.Lecturer?.Email</td>
+                    <td>@account.Lecturer?.HourlyRate.ToString("C")</td>
                     <td>
                         <a asp-action="Edit" asp-route-id="@account.Id" class="btn btn-warning btn-sm">Edit</a>
                     </td>

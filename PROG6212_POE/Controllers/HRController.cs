@@ -18,7 +18,6 @@ namespace PROG6212_POE.Controllers
             //This is to check if the user is HR
             if (HttpContext.Session.GetString("AccountRole") != "HR")
             {
-                TempData["Message"] = "Access denied. HR only area.";
                 return RedirectToAction("Index", "Account");
             }
 
@@ -33,7 +32,7 @@ namespace PROG6212_POE.Controllers
         {
             if (HttpContext.Session.GetString("AccountRole") != "HR")
             {
-                TempData["Message"] = "Access denied. HR only area.";
+             
                 return RedirectToAction("Index", "Account");
             }   
             return View();
@@ -43,7 +42,7 @@ namespace PROG6212_POE.Controllers
         {
             if (HttpContext.Session.GetString("AccountRole") != "HR")
             {
-                TempData["Message"] = "Access denied. HR only area.";
+            
                 return RedirectToAction("Index", "Account");
             }
 
@@ -67,8 +66,9 @@ namespace PROG6212_POE.Controllers
 
                     };
                     _context.Lecturer.Add(lecturer);
+                    await _context.SaveChangesAsync();
                 }
-                await _context.SaveChangesAsync();
+     
                 return RedirectToAction("Index");
             }
             return View(account);
@@ -79,7 +79,6 @@ namespace PROG6212_POE.Controllers
         {
             if(HttpContext.Session.GetString("AccountRole") != "HR")
             {
-                TempData["Message"] = "Access denied. HR only area.";
                 return RedirectToAction("Index", "Account");
             }
             var account = await _context.Account
@@ -89,7 +88,7 @@ namespace PROG6212_POE.Controllers
             {
                 return NotFound();
             }
-            return View(account);
+            return View("Edit", account);
         }
 
         [HttpPost]
@@ -97,7 +96,6 @@ namespace PROG6212_POE.Controllers
         {
             if (HttpContext.Session.GetString("AccountRole") != "HR")
             {
-                TempData["Message"] = "Access denied. HR only area.";
                 return RedirectToAction("Index", "Account");
             }
             if (ModelState.IsValid)
@@ -124,7 +122,6 @@ namespace PROG6212_POE.Controllers
         {
             if (HttpContext.Session.GetString("AccountRole") != "HR")
             {
-                TempData["Message"] = "Access denied. HR only area.";
                 return RedirectToAction("Index", "Account");
             }
 
