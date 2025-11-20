@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using PROG6212_POE.Models;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -125,12 +126,45 @@ namespace PROG6212_POE.Controllers
                 return RedirectToAction("Index", "Account");
             }
 
-            var claims = await _context.Claim
+            var reportData = await GetReportData();
+            return View(reportData);
+        }
+
+            public async Task<ReportData> GetReportData()
+            { 
+            var allClaims = await _context.Claim
                 .Include(c => c.Lecturer)
-                .Where(c => c.ClaimStatus == "Approved by Manager")
                 .ToListAsync();
 
-            return View(claims);
+                var allLecturers = await _context.Lecturer.ToListAsync();
+
+                var approvedClaims = allClaims
+                    .Where(c => c.ClaimStatus == "Approved by Manager")
+                    .ToList();
+                var pendingClaims = allClaims
+                    .Where(c => c.ClaimStatus.Contains("Pending"))
+                    .ToList();
+                var rejectedClaims = allClaims 
+                    .Where(c => c.ClaimStatus.Contains("Rejected"))
+                    .ToList();
+
+                var totalApprovedAmount = approvedClaims.Sum(c => c.TotalAmount);
+                var averageHours = approvedClaims.Any() ? approvedClaims.Average(c => c.TotalHoursWorked) : 0;
+
+                //Monnthly data
+                var monthlyData = approvedClaims
+                    .GroupBy(c => c.SubmissionDate.ToString("yyyy-MM"))
+                    .Select(g => new MonthlySumm
+                    {
+                        Month = g.Key,
+                        TotalApprovedAmount = g.Sum(c => c.TotalAmount),
+                        TotalClaims = g.Count()
+                    })
+                    .OrderByDescending(m => m.Month)
+                    .ToList();
+
+
+                return View(claims);
         }
     }
 }
