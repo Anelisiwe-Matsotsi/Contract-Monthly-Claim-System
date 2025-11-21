@@ -7,6 +7,7 @@ using System.Text;
 
 namespace PROG6212_POE.Controllers
 {
+    //Responsible for HR functionalities which includes managing accounts and generating reports
     public class HRController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -23,7 +24,7 @@ namespace PROG6212_POE.Controllers
             {
                 return RedirectToAction("Index", "Account");
             }
-
+            //retrieves all accounts with their linked Lecturer details
             var users = await _context.Account
                 .Include(a => a.Lecturer)
                 .ToListAsync();
@@ -42,6 +43,7 @@ namespace PROG6212_POE.Controllers
             return View();
         }
         [HttpPost]
+        //handles creation of both Account and linked Lecturer
         public async Task<IActionResult> Create(Account account, string fullName, string email, string department, decimal hourlyRate)
         {
             if (HttpContext.Session.GetString("AccountRole") != "HR")
@@ -56,6 +58,7 @@ namespace PROG6212_POE.Controllers
                 await _context.SaveChangesAsync();
 
                 /*Troelson and Japiske, 2021*/
+                //if the created account is a Lecturer, create the linked Lecturer record
                 if (account.Role == "Lecturer")
                 {
                     var lecturer = new Lecturer
@@ -80,12 +83,15 @@ namespace PROG6212_POE.Controllers
         }
 
         [HttpGet]
+        //displays the edit form for the selected account
         public async Task<IActionResult> Edit(int id)
         {
             if (HttpContext.Session.GetString("AccountRole") != "HR")
             {
                 return RedirectToAction("Index", "Account");
             }
+
+            //fetches the account along with linked Lecturer details
             var account = await _context.Account
                 .Include(a => a.Lecturer)
                 .FirstOrDefaultAsync(a => a.Id == id);
@@ -99,6 +105,7 @@ namespace PROG6212_POE.Controllers
 
         [HttpPost]
         /*Troelson and Japiske, 2021*/
+        //handles updating both Account and linked Lecturer details
         public async Task<IActionResult> Edit(Account account, string fullName, string email, string department, decimal hourlyRate)
         {
             if (HttpContext.Session.GetString("AccountRole") != "HR")
@@ -126,14 +133,14 @@ namespace PROG6212_POE.Controllers
             return View(account);
         }
 
-
+        //Generates the HR report view, which initiates data retrieval for the report
         public async Task<IActionResult> GenerateReport()
         {
             if (HttpContext.Session.GetString("AccountRole") != "HR")
             {
                 return RedirectToAction("Index", "Account");
             }
-
+            //fetches all necessary data for the report
             var reportData = await GetReportData();
             return View(reportData);
         }
@@ -143,6 +150,7 @@ namespace PROG6212_POE.Controllers
 
         /*Troelson and Japiske, 2021*/
         /*Microsoft, 2025a*/
+        //constructs the report data by querying and processing claims and lecturers
         public async Task<ReportData> GetReportData()
         {
             var allClaims = await _context.Claim
@@ -161,11 +169,11 @@ namespace PROG6212_POE.Controllers
             var rejectedClaims = allClaims
                 .Where(c => c.ClaimStatus.Contains("Rejected"))
                 .ToList();
-
+            //Summary statistics calculations
             var totalApprovedAmount = approvedClaims.Sum(c => c.TotalAmount);
             var averageHoursWorked = approvedClaims.Any() ? (decimal) approvedClaims.Average(c => c.TotalHoursWorked) : 0;
 
-            //Monnthly data
+            //Monnthly data summary using LINQ group by
             /*Microsoft, 2025b*/
             var monthlyData = approvedClaims
                 .GroupBy(c => c.Month)
@@ -178,6 +186,7 @@ namespace PROG6212_POE.Controllers
                 .OrderByDescending(m => m.Month)
                 .ToList();
 
+            //Top 5 lecturers by approved amount
             var topLecturers = approvedClaims
                 .Where(c => c.Lecturer != null)
                 .GroupBy(c => c.LecturerId)
@@ -206,6 +215,7 @@ namespace PROG6212_POE.Controllers
             };
         }
 
+        //displays details of a specific claim invoice
         public async Task<IActionResult> ViewInvoice(int claimId)
         {
             if (HttpContext.Session.GetString("AccountRole") != "HR")
@@ -226,6 +236,7 @@ namespace PROG6212_POE.Controllers
             return View(claims);
         }
 
+        //generates a report filtered by a specific lecturer
         public async Task<IActionResult> LecturerReport(int lecturerId)
         {
             if (HttpContext.Session.GetString("AccountRole") != "HR")
@@ -245,6 +256,7 @@ namespace PROG6212_POE.Controllers
             return View(lecturerClaims);
         }
 
+        //generates and downloads the full HR report as a PDF
         [HttpPost]
         public async Task<IActionResult>DownloadPdfReport()
         {
@@ -268,6 +280,7 @@ namespace PROG6212_POE.Controllers
             }
         }
 
+        //generates and downloads a specific claim invoice as a PDF
         [HttpPost]
         public async Task<IActionResult> DownloadInvoicePdf(int claimId)
         {
@@ -291,7 +304,7 @@ namespace PROG6212_POE.Controllers
                 var invoiceContent = GeneratePdfInvoiceContent(claim);
                 var bytes = Encoding.UTF8.GetBytes(invoiceContent);
 
-                var fileName = $"Invoice_{claim.Lecturer?.FullName}_{claim.Month}.pdf";
+                var fileName = $"Invoice_{claim.Lecturer?.FullName}_{claim.Month}.pdf"; 
                 return File(bytes, "application/pdf", fileName);
             }
             catch (Exception ex)
@@ -301,8 +314,10 @@ namespace PROG6212_POE.Controllers
             }
         }
         /* Microsoft, 2025b */
+        //converts the report data into a formatted string for PDF generation using StringWriter
         private string GeneratePdfReportContent(ReportData data)
         {
+            /*Stackoverflow, 2012*/
             using var writer = new StringWriter();
 
             writer.WriteLine("HR CLAIMS REPORT");
@@ -324,7 +339,7 @@ namespace PROG6212_POE.Controllers
             writer.WriteLine("-----------------");
             foreach (var month in data.MonthlyData)
             {
-                var average = month.TotalClaims > 0 ? month.TotalApprovedAmount / month.TotalClaims : 0;
+                var average = month.TotalClaims > 0 ? month.TotalApprovedAmount / month.TotalClaims : 0; /*Programmershelp, 2025*/
                 writer.WriteLine($"{month.Month}: {month.TotalClaims} claims, R{month.TotalApprovedAmount:F2} (Avg: R{average:F2})");
             }
             writer.WriteLine();
@@ -333,6 +348,7 @@ namespace PROG6212_POE.Controllers
             writer.WriteLine("-------------------------");
             foreach (var lecturer in data.TopLecturers)
             {
+                //Calculates average approved amount per claim for each lecturer
                 var average = lecturer.TotalClaims > 0 ? lecturer.TotalApprovedAmount / lecturer.TotalClaims : 0;
                 writer.WriteLine($"{lecturer.LecturerName} ({lecturer.Department}): R{lecturer.TotalApprovedAmount:F2} from {lecturer.TotalClaims} claims (Avg: R{average:F2})");
             }
@@ -340,7 +356,8 @@ namespace PROG6212_POE.Controllers
 
             writer.WriteLine("APPROVED CLAIMS DETAIL");
             writer.WriteLine("----------------------");
-            foreach (var claim in data.ApprovedClaims.Take(20))
+            //loops through the first 20 approved claims in the collection and writes each claim detail
+            foreach (var claim in data.ApprovedClaims.Take(20))/*Troelson and Japiske, 2021*/ 
             {
                 writer.WriteLine($"{claim.Lecturer?.FullName} - {claim.Month}: {claim.TotalHoursWorked} hours @ R{claim.HourlyRate} = R{claim.TotalAmount:F2}");
             }
@@ -349,8 +366,10 @@ namespace PROG6212_POE.Controllers
         }
 
         /* Microsoft, 2025b*/
+        //converts a specific claim into a formatted string for PDF invoice generation using StringWriter
         private string GeneratePdfInvoiceContent(Claim claim)
         {
+            /*Stackoverflow, 2012*/
             using var writer = new StringWriter();
 
             writer.WriteLine("INVOICE");
@@ -393,7 +412,10 @@ namespace PROG6212_POE.Controllers
 
             return writer.ToString();
         }
+
         [HttpGet]
+        //clears the session and logs out the user
+        /*Troelson and Japiske, 2021*/
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
@@ -406,5 +428,7 @@ namespace PROG6212_POE.Controllers
 /*Reference List:
 Microsoft. 2025a. StringWriter Class. [online]. Available at: <https://learn.microsoft.com/en-us/dotnet/api/system.io.stringwriter?view=net-10.0>.[Accessed 19 November 2025].
 Microsoft. 2025b. Write C# LINQ queries to query data. [online]. Available at: <https://learn.microsoft.com/en-us/dotnet/csharp/linq/get-started/write-linq-queries>.[Accessed 19 November 2025].
-Troelsen,A. and Japikse, P. 2021.Pro C# 9 with .NET 5:Foundational Principles and Practices in Programming. 10th ed.Apress.
+Programmershelp. 2025. How to Fix DivideByZeroException in C# – Beginner-Friendly Guide. [online]. Available at: <https://www.programmershelp.net/tips/how-to-fix-dividebyzeroexception-in-c-beginner-friendly-guide.php>. [Accessed 19 November 2025].
+Stackoverflow. 2012. Convert StringWriter to string[]. [online]. Available at: <https://stackoverflow.com/questions/10303315/convert-stringwriter-to-string>. [Accessed 19 November 2025].
+Troelsen, A. and Japikse, P. 2021.Pro C# 9 with .NET 5:Foundational Principles and Practices in Programming. 10th ed.Apress.
  */

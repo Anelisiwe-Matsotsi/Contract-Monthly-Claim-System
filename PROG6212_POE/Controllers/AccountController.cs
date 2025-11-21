@@ -5,6 +5,7 @@ using PROG6212_POE.Models;
 namespace PROG6212_POE.Controllers
 {
     /* Troelsen and Japikse, 2021*/
+    //responsible for user authentication (login/logout) and session management
     public class AccountController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -13,15 +14,17 @@ namespace PROG6212_POE.Controllers
             _context = context;
         }
         [HttpGet]
+        //displays the login page
         public IActionResult Index()
         {
             return View();
         }
 
         [HttpPost]
+        //handles login authentication
         public IActionResult Login(string username, string password)
         {
-
+            //validate user credentials against the database
             var validAccount = _context.Account.FirstOrDefault(a => a.Username == username && a.Password == password);
 
             if (validAccount == null)
@@ -34,11 +37,12 @@ namespace PROG6212_POE.Controllers
             // If credentials are valid, create a session variable
             // to store the username.
             // This marks the user as "logged in".
-
+            //stores authenticated user details in session variables
             HttpContext.Session.SetString("AccountUsername", validAccount.Username);
             HttpContext.Session.SetString("AccountRole", validAccount.Role);
             HttpContext.Session.SetString("UserId", validAccount.Id.ToString());
 
+            // If the user is a Lecturer, store their LecturerId in session
             if (validAccount.Role == "Lecturer")
             {
                 var lecturer = _context.Lecturer.FirstOrDefault(l => l.AccountId == validAccount.Id);
@@ -47,6 +51,7 @@ namespace PROG6212_POE.Controllers
                     HttpContext.Session.SetString("LecturerId", lecturer.LecturerId.ToString());
                 }
         }
+            //redirect users to their respective dashboards based on role
             switch (validAccount.Role)
             {
                 case "HR":
