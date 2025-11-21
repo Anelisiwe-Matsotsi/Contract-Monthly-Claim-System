@@ -15,6 +15,7 @@ namespace PROG6212_POE.Controllers
             _context = context;
         }
         /*Troelson and Japiske, 2021*/
+        //HR only access is enforced using Sessions
         public async Task<IActionResult> Index()
         {
             //This is to check if the user is HR
@@ -29,6 +30,7 @@ namespace PROG6212_POE.Controllers
             return View(users);
         }
 
+        //Automatically creates a linked Lecturer when the Role is set to Lecturer
         [HttpGet]
         public IActionResult Create()
         {
@@ -94,7 +96,9 @@ namespace PROG6212_POE.Controllers
             return View("Edit", account);
         }
 
+
         [HttpPost]
+        /*Troelson and Japiske, 2021*/
         public async Task<IActionResult> Edit(Account account, string fullName, string email, string department, decimal hourlyRate)
         {
             if (HttpContext.Session.GetString("AccountRole") != "HR")
@@ -105,6 +109,7 @@ namespace PROG6212_POE.Controllers
             {
                 _context.Account.Update(account);
                 await _context.SaveChangesAsync();
+                //Updates linked Lecturer
                 var lecturer = await _context.Lecturer.FirstOrDefaultAsync(l => l.AccountId == account.Id);
                 if (lecturer != null && account.Role == "Lecturer")
                 {
@@ -137,7 +142,7 @@ namespace PROG6212_POE.Controllers
 
 
         /*Troelson and Japiske, 2021*/
-
+        /*Microsoft, 2025a*/
         public async Task<ReportData> GetReportData()
         {
             var allClaims = await _context.Claim
@@ -146,6 +151,7 @@ namespace PROG6212_POE.Controllers
 
             var allLecturers = await _context.Lecturer.ToListAsync();
 
+            //Status filtering using LINQ
             var approvedClaims = allClaims
                 .Where(c => c.ClaimStatus == "Approved by Manager")
                 .ToList();
@@ -160,7 +166,7 @@ namespace PROG6212_POE.Controllers
             var averageHoursWorked = approvedClaims.Any() ? (decimal) approvedClaims.Average(c => c.TotalHoursWorked) : 0;
 
             //Monnthly data
-            /*Microsoft, 2025*/
+            /*Microsoft, 2025b*/
             var monthlyData = approvedClaims
                 .GroupBy(c => c.Month)
                 .Select(g => new MonthlySumm
@@ -294,7 +300,7 @@ namespace PROG6212_POE.Controllers
                 return RedirectToAction("GenerateReport");
             }
         }
-        /* Microsoft, 2025 */
+        /* Microsoft, 2025b */
         private string GeneratePdfReportContent(ReportData data)
         {
             using var writer = new StringWriter();
@@ -342,7 +348,7 @@ namespace PROG6212_POE.Controllers
             return writer.ToString();
         }
 
-        /* Microsoft, 2025 */
+        /* Microsoft, 2025b*/
         private string GeneratePdfInvoiceContent(Claim claim)
         {
             using var writer = new StringWriter();
@@ -398,6 +404,7 @@ namespace PROG6212_POE.Controllers
 
 
 /*Reference List:
-Microsoft. 2025. Write C# LINQ queries to query data. [online]. Available at: <https://learn.microsoft.com/en-us/dotnet/csharp/linq/get-started/write-linq-queries>.[Accessed 19 November 2025].
+Microsoft. 2025a. StringWriter Class. [online]. Available at: <https://learn.microsoft.com/en-us/dotnet/api/system.io.stringwriter?view=net-10.0>.[Accessed 19 November 2025].
+Microsoft. 2025b. Write C# LINQ queries to query data. [online]. Available at: <https://learn.microsoft.com/en-us/dotnet/csharp/linq/get-started/write-linq-queries>.[Accessed 19 November 2025].
 Troelsen,A. and Japikse, P. 2021.Pro C# 9 with .NET 5:Foundational Principles and Practices in Programming. 10th ed.Apress.
  */

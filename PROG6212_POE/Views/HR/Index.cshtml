@@ -22,6 +22,7 @@
                 <th>Role</th>
                 <th>Full Name</th>
                 <th>Email</th>
+                <th>Password</th>
                 <th>Hourly Rate</th>
                 <th>Actions</th>
             </tr>
@@ -31,9 +32,10 @@
             {
                 <tr>
                     <td>@account.Username</td>
-                    <td>@account.Role</td>
+                    <td>@account.Role</td>               
                     <td>@account.Lecturer?.FullName</td>
                     <td>@account.Lecturer?.Email</td>
+                    <td>@account.Password</td>
                     <td>@account.Lecturer?.HourlyRate.ToString("C")</td>
                     <td>
                         <a asp-action="Edit" asp-route-id="@account.Id" class="btn btn-warning btn-sm">Edit</a>
