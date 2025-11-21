@@ -235,8 +235,12 @@ Link: https://youtu.be/UIdylaoA31Q
 ### Database upgrade
 - Added a new table called Account, which replaced AppUser
 - Added HR role
-  
-  
+<img width="1401" height="767" alt="Image" src="https://github.com/user-attachments/assets/2c373729-dfc4-4966-b173-9b173ca505b0" />
+
+<img width="916" height="897" alt="Image" src="https://github.com/user-attachments/assets/07981d3f-34e5-476e-bcf7-35ae839cbb44" />
+
+### Youtube video:
+
 </details>
 
 ---
