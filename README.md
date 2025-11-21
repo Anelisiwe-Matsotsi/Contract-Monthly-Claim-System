@@ -1,7 +1,8 @@
 # PROG6212_POE
 
 ---
-
+<details>
+  <summary><h2> Part 1 </h2></summary>
 ## 📃Documentation:
 
 ### Introduction
@@ -188,9 +189,11 @@ Part 3 ensures the system is ready for deployment with thorough testing, bug fix
 ### Manager screen:
 
 <img width="1908" height="887" alt="Image" src="https://github.com/user-attachments/assets/0bcd03a1-125a-4f99-be0d-bb81db07c64a" />
+</details>
 
 ---
-## Part 2
+<details>
+<summary><h2>Part 2</h2></summary>
 
 ### Feedback:
 <img width="1920" height="1020" alt="Image" src="https://github.com/user-attachments/assets/b6d86494-6b2a-4483-8899-8210bb9f8d53" />
@@ -210,8 +213,37 @@ Azure Portal (2025)
 
 Link: https://youtu.be/UIdylaoA31Q
 
+</details>
+
 ---
-## 📚References:
+<details>
+  <summary><h2>POE</h2></summary>
+  
+  ## Changes made from part 2 to part 3
+ 
+ ### New HR Management System
+ - Creates lecturer profiles
+ - Generates reports
+
+### Reports
+  - Uses LINQ and StringWriter to generate pdf report for HR reports and invoices
+
+### Security enhancement
+- Uses session-based authentication for each user
+- Limits certain views to certain users
+
+### Database upgrade
+- Added a new table called Account, which replaced AppUser
+- Added HR role
+  
+  
+</details>
+
+---
+
+<details>
+  <summary><h2>📚Reference List:</h2></summary>
+
 Azure Portal.2025. SQL Database script.[online]. Available at:< https://portal.azure.com/#@advtechonline.onmicrosoft.com/resource/subscriptions/41c840f0-fc0c-4944-97bf-4ae4e6bb7151/resourceGroups/prog/providers/Microsoft.Sql/servers/progst10328767/databases/st10328767/queryEditor > [Accessed 19 October 2025].
 Draw.io. 2025. UML Class Diagram. [online]. Available at: <https://app.diagrams.net/>. [Accessed 12 September 2025].
 
@@ -222,3 +254,5 @@ Indeed. 2025. Assumption vs. Constraint: Definitions, Types and Differences. [on
 
 Satzinger, J.W. Jackson, J.B. and Burd, S.D.,2016. Systems Analysis and Design in a Changing 
 World. 7th edition. Boston: Cengage. 
+
+</details>
